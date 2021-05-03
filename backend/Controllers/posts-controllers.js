@@ -2,6 +2,8 @@ const { uuid } = require('uuidv4');
 const { validationResult } = require("express-validator");
 const HttpError = require("../Models/http-error");
 
+const Post = require('../Models/post');
+
 let DUMMY_POSTS = [
   {
     id: "p1",
@@ -66,23 +68,29 @@ const getPostsByUserId = (req, res, next) => {
 
 //Crea un post nuevo, titulo, descripcion y categoria son obligatorios
 // /api/posts ( metodo POST)
-const createPost = (req, res, next) => {
+const createPost = async (req, res, next) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
-    console.log(errors);
     return next(new HttpError('Datos invalidos, chequea los datos',422));
   };
+
   const { title, description,categoria, creator } = req.body;
-  const createdPost = {
-    id: uuid(),
+  const createdPost = new Post({
     title: title,
     description: description,
     categoria: categoria,
-    creator: creator,
-  };
-
-  DUMMY_POSTS.push(createdPost);
-
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
+    creator: creator
+  });
+  try {
+    await createdPost.save();
+  } catch(err) {
+    const error = new HttpError(
+      'Falla al crear el post',
+       500
+    );
+    return next(error);
+  }
   res.status(201).json({ post: createdPost });
 };
 
