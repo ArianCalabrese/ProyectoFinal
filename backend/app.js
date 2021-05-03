@@ -5,11 +5,13 @@ const HttpError = require("./Models/http-error");
 
 const usersRoutes = require('./routes/users-routes');
 
+const postsRoutes = require('./routes/posts-routes');
+
 const app = express();
 
 app.use(bodyParser.json());
 
-
+app.use('/api/posts', postsRoutes);
 
 app.use('/api/users', usersRoutes);
 
