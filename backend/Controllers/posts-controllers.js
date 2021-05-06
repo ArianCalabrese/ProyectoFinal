@@ -83,19 +83,19 @@ const createPost = async (req, res, next) => {
     return next(new HttpError("Datos invalidos, chequea los datos", 422));
   }
 
-  const { title, description, categoria, creator } = req.body;
+  const { title, description, categoria } = req.body;
   const createdPost = new Post({
     title: title,
     description: description,
     categoria: categoria,
     imagen:
       "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
-    creator: creator,
+    creator: req.userData.userId,
   });
 
   let user;
   try {
-    user = await User.findById(creator);
+    user = await User.findById(req.userData.userId);
   } catch (err) {
     const error = new HttpError("Fallo la creacion del post", 500);
     return next(error);
@@ -132,11 +132,19 @@ const updatePostById = async (req, res, next) => {
 
   let post;
   try {
-    post = await Post.findById(postId);
+    post = await Post.findById(postId).populate('creator');
   } catch (err) {
     const error = new HttpError(
       "Algo salio mal, no se pudo modificar el post",
       500
+    );
+    return next(error);
+  }
+
+  if(post.creator.toString() !== req.userData.userId){
+    const error = new HttpError(
+      "No puedes modificar este post, no eres el creador",
+      401
     );
     return next(error);
   }
@@ -172,6 +180,14 @@ const deletePostById = async (req, res, next) => {
 
   if(!post){
     const error = new HttpError('No se pudo encontrar post con ese id', 404);
+    return next(error);
+  }
+
+  if(post.creator.id !== req.userData.userId){
+    const error = new HttpError(
+      "No puedes borrar este post, no eres el creador",
+      401
+    );
     return next(error);
   }
 
