@@ -1,93 +1,126 @@
-const { uuid } = require('uuidv4');
+const { uuid } = require("uuidv4");
 const { validationResult } = require("express-validator");
 const HttpError = require("../Models/http-error");
 
-const DUMMY_USERS = [
-    {
-        id: "ul",
-        name:"Max",
-        email:"algo@algo.com",
-        password:"testpass",
-        ciudad:"La Plata"
-    },
-    {
-        id: "uk",
-        name:"Maxer",
-        email:"algo2@algo.com",
-        password:"testpass2",
-        ciudad:"La Plata"
-    },
-    {
-        id: "uw",
-        name:"Shino",
-        email:"alg223o2@algo.com",
-        password:"testpass2",
-        ciudad:"Avellaneda"
-    }
-]; 
+const User = require("../Models/user");
 
 
+
+//Listo
 //Devuelve la lista de todos los usuarios /api/users
-const getUsers = (req, res, next) => {
-    res.json({ users: DUMMY_USERS});
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, "-password");
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontron usuarios", 500);
+    return next(error);
+  }
+  if (!users || users.length === 0) {
+    const error = new HttpError(
+      "No se encontro ningun usuario en la base de datos",
+      404
+    );
+    return next(error);
+  }
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+//Listo
 //Devuelve los usuarios de una ciodad, /api/users/ciudad/{ciudad}
-const getUsersByCiudad = (req, res, next) => {
-    const ciudad = req.params.ciudad;
-    const usuarios = DUMMY_USERS.filter((u) => {
-        return u.ciudad === ciudad;
-    })
-    if(!usuarios || usuarios.length === 0){
-        return next(new HttpError('Ningun usuario de esa ciudad', 404));
-    };
-    res.json({ usuarios});
+const getUsersByCiudad = async (req, res, next) => {
+  const ciudad = req.params.ciudad;
+  let users;
+  try {
+    users = await User.find({ ciudad: ciudad });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontron usuario de esa ciudad", 500);
+    return next(error);
+  }
+
+  if (!users || users.length === 0) {
+    const error = new HttpError(
+      "No se encontro ningun usuario de esa ciudad",
+      404
+    );
+    return next(error);
+  }
+
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+//Listo
 //Registrar usuario, nombre, email, password y ciudad son requeridos
 // /api/users/signup
-const signup = (req, res, next) => {
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return next(new HttpError('Datos erroneos', 422));
-    }
-    const { name, email, password, ciudad} = req.body;
+const signup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError("Datos erroneos", 422));
+  }
+  const { name, email, password, ciudad } = req.body;
 
-    const usuarioExiste = DUMMY_USERS.find(u => u.email === email);
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (err) {
+    const error = new HttpError("Hubo un problema creando usuario", 500);
+    return next(error);
+  }
 
-    if (usuarioExiste){
-        return next(new HttpError('Ya existe un usuario con ese email', 422));
-    }
+  if (existingUser) {
+    const error = new HttpError("Ya existe un usuario con  ese mail", 422);
+    return next(error);
+  }
+  const createdUser = new User({
+    name: name,
+    email: email,
+    password: password,
+    imagen:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
+    ciudad: ciudad,
+    posts: [],
+  });
 
-    const createdUser = {
-        id: uuid(),
-        name: name,
-        email: email,
-        password: password,
-        ciudad: ciudad
-    };
+  try {
+    await createdUser.save();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("Falla al crear el usuario", 500);
+    return next(error);
+  }
 
-    DUMMY_USERS.push(createdUser);
-
-    res.status(201).json({ user: createdUser });
-
+  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
+//Listo
 //Permite loguearse con usuario y contraseña /api/users/login
-const login = (req, res, next) => {
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return next(new HttpError('Datos erroneos', 422));
-    }
-    
-    const { email, password} = req.body;
+const login = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError("Datos erroneos", 422));
+  }
 
-    const identifiedUser = DUMMY_USERS.find(u => u.email === email);
+  const { email, password } = req.body;
 
-    if (!identifiedUser || identifiedUser.password !== password){
-        return next(new HttpError(' No se encontro el usuario, o los datos son equivocados', 401));
-    }
-     res.json({message: ' logueado'});
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (err) {
+    const error = new HttpError("Hubo un problema en el servidor", 500);
+    return next(error);
+  }
+
+  if (!existingUser || existingUser.password !== password) {
+    const error = new HttpError(
+      "No existe el usuario o los datos son incorrectos",
+      422
+    );
+    return next(error);
+  }
+
+  res.json({ message: " logueado" });
 };
 
 exports.getUsers = getUsers;
