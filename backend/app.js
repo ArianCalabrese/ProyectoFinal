@@ -30,7 +30,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://AdminMaxi:proyectofinal2021@cluster0.27mee.mongodb.net/posts?retryWrites=true&w=majority')
+  .connect('')
   .then(() => {
     app.listen(5000);
   })
