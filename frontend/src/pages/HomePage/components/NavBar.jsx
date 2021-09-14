@@ -43,8 +43,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const navLinks = [
-  { title: `about us`, path: `/about-us` },
-  { title: `login`, path: `/login` },
+  { title: `Nosotros`, path: `/about-us` },
+  { title: `FAQ`, path: `/about-us` },
+  { title: `Ingresar`, path: `/login` },
 ];
 
 const NavBar = () => {

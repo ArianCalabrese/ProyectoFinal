@@ -69,7 +69,7 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Sponsors />
-       <TestSponsor />
+      <TestSponsor />
       <Footer />
     </div>
   );
