@@ -1,0 +1,11 @@
+rafce
+
+animation: 30s linear 0s infinite normal none running gAobpi;
+    animation-name: gAobpi;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
