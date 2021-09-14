@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import HomePage from "./pages/HomePage/HomePage";
 import AuthPage from "./pages/AuthPage/AuthPage";
-import "./index.scss";
+import "./index.css";
 //import myStore from "./store";
 
 let routes;
