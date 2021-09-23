@@ -1,23 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   AppBar,
   makeStyles,
   Toolbar,
-  Typography,
   IconButton,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
   Container,
   Hidden,
 } from "@material-ui/core";
-import { NavLink, Link } from "react-router-dom";
 
-import MenuIcon from "@material-ui/icons/Menu";
 import { Home } from "@material-ui/icons";
 import SideDrawer from "./SideDrawer";
 import HideOnSCroll from "./HideOnScroll";
+import { UserContext } from "../../../Context/UserContext";
+import NavLinks from "./NavLinks";
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -50,6 +45,7 @@ const navLinks = [
 
 const NavBar = () => {
   const classes = useStyles();
+  const auth = useContext(UserContext);
   return (
     <div className={classes.offset}>
       <HideOnSCroll>
@@ -59,21 +55,8 @@ const NavBar = () => {
               <IconButton edge="start" color="inherit" aria-label="home">
                 <Home fontSize="large" />
               </IconButton>
-
               <Hidden smDown>
-                <List
-                  component="nav"
-                  aria-labelledby="main navigation"
-                  className={classes.navDisplayFlex}
-                >
-                  {navLinks.map(({ title, path }) => (
-                    <a href={path} key={title} className={classes.linkText}>
-                      <ListItem button>
-                        <ListItemText primary={title} />
-                      </ListItem>
-                    </a>
-                  ))}
-                </List>
+                <NavLinks />
               </Hidden>
               <Hidden mdUp>
                 <SideDrawer navLinks={navLinks} />

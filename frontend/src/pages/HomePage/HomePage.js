@@ -13,6 +13,8 @@ import Mision from "./components/sections/Mision";
 import Sponsors from "./components/sections/Sponsors";
 import TestSponsor from "./components/sections/TestSponsor";
 import ProgressBar from "react-progressbar-on-scroll";
+import { UserContext } from "../../Context/UserContext";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: 0,
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HomePage = () => {
   const classes = useStyles();
+  const { user, setUser } = useContext(UserContext);
   return (
     <div className={classes.root}>
       <ProgressBar />
@@ -69,7 +72,7 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Sponsors />
-      <TestSponsor />
+      {/* <TestSponsor /> */}
       <Footer />
     </div>
   );

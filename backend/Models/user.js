@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 8 },
   imagen: { type: String, required: true },
-  ciudad: { type: String, required: true },
+  ciudad: { type: String, required: false },
   posts: [{ type: mongoose.Types.ObjectId, required: true, ref: "Post" }],
 });
 

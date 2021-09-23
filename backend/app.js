@@ -8,9 +8,15 @@ const usersRoutes = require("./routes/users-routes");
 
 const postsRoutes = require("./routes/posts-routes");
 
+const cors = require('cors');
+
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(cors({
+  origin: '*'
+}));
 
 app.use("/api/posts", postsRoutes);
 
@@ -30,7 +36,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://AdminMaxi:proyectofinal2021@cluster0.27mee.mongodb.net/posts?retryWrites=true&w=majority')
+  .connect('mongodb+srv://ariancalabrese:proyectoFinal@finalprojectcluster.b8pxz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
   .then(() => {
     app.listen(5000);
   })

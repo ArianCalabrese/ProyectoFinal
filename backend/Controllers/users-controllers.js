@@ -59,7 +59,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos erroneos", 422));
   }
-  const { name, email, password, ciudad } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -88,7 +88,6 @@ const signup = async (req, res, next) => {
     password: hashedPassword,
     imagen:
       "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
-    ciudad: ciudad,
     posts: [],
   });
 
