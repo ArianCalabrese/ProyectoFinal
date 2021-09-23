@@ -8,6 +8,8 @@ const usersRoutes = require("./routes/users-routes");
 
 const postsRoutes = require("./routes/posts-routes");
 
+const cors = require('cors');
+
 const app = express();
 
 app.use(bodyParser.json());

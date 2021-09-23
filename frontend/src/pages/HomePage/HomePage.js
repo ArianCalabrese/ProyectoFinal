@@ -15,6 +15,9 @@ import TestSponsor from "./components/sections/TestSponsor";
 import { AuthContext } from "../../shared/context/auth-context";
 //me tira error
 //import ProgressBar from "../../../react-progressbar-on-scroll";
+import ProgressBar from "react-progressbar-on-scroll";
+import { UserContext } from "../../Context/UserContext";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: 0,
@@ -44,6 +47,7 @@ const HomePage = () => {
 
   const classes = useStyles();
   <div id="modal-hook"></div>;
+  const { user, setUser } = useContext(UserContext);
   return (
     <div className={classes.root}>
       <AuthContext.Provider
@@ -82,10 +86,11 @@ const HomePage = () => {
               Sponsors
             </Typography>
           </Typography>
-        </Box>
-        <Sponsors />
-        <TestSponsor />
-        <Footer />
+        
+      </Box>
+      <Sponsors />
+      {/* <TestSponsor /> */}
+      <Footer />
       </AuthContext.Provider>
     </div>
   );

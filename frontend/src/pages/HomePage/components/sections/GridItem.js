@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { IconButton } from "@material-ui/core";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import MailIcon from "@material-ui/icons/Mail";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 326,
@@ -52,11 +53,10 @@ const GridItem = (props) => {
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Avatar
-          alt="Remy Sharp"
           src={props.img}
           className={classes.large}
           style={{
-            border: "1px solid black",
+            border: "0.1px solid black",
           }}
         />
         <Typography variant="h5" component="h2" className={classes.pos}>
@@ -66,10 +66,7 @@ const GridItem = (props) => {
           {props.rol}
         </Typography>
         <Typography variant="body2" component="p" className={classes.pos}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius maiores
-          consectetur, deleniti corporis qui voluptas porro. Aliquid quae magnam
-          exercitationem sunt voluptas quis, consectetur tempore, recusandae
-          suscipit esse neque reiciendis?
+          {props.description}
         </Typography>
       </CardContent>
       <CardActions>
