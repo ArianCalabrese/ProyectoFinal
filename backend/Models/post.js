@@ -7,6 +7,7 @@ const postSchema = new Schema({
   description: { type: String, required: true },
   categoria: { type: String, required: true },
   imagen: { type: String, required: true },
+  ciudad: { type: String, required: true},
   creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
 });
 

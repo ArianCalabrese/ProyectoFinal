@@ -2,7 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const HttpError = require("../Models/http-error");
 const postsControllers = require("../Controllers/posts-controllers");
-const checkAuth = require('../Middleware/check-auth');
+const checkAuth = require("../Middleware/check-auth");
 
 const router = express.Router();
 

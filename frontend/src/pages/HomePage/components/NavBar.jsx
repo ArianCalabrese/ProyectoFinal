@@ -43,9 +43,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const navLinks = [
-  { title: `Nosotros`, path: `/about-us` },
-  { title: `FAQ`, path: `/about-us` },
+  { title: `Nosotros`, path: `/` },
+  { title: `FAQ`, path: `/` },
   { title: `Ingresar`, path: `/login` },
+  { title: `Agregar Post`, path: `/agregarpost` },
+  { title: `Lista de Post`, path: `/posts` },
+  { title: `Usuarios`, path: `/usuarios` },
 ];
 
 const NavBar = () => {
@@ -56,9 +59,10 @@ const NavBar = () => {
         <AppBar position="fixed">
           <Toolbar>
             <Container maxWidth="md" className={classes.navbarDisplayFlex}>
-              <IconButton edge="start" color="inherit" aria-label="home">
+              <IconButton edge="start" color="inherit" aria-label="home" href="/">
                 <Home fontSize="large" />
               </IconButton>
+
 
               <Hidden smDown>
                 <List

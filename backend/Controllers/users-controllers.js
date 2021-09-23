@@ -58,6 +58,7 @@ const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos erroneos", 422));
+    console.log(errors);
   }
   const { name, email, password, ciudad } = req.body;
 
@@ -113,7 +114,7 @@ const signup = async (req, res, next) => {
   }
   res
     .status(201)
-    .json({ userId: createdUser.id, email: createdUser.email, token: token }); //aca va lo que devuelve
+    .json({ name:createdUser.name, password: createdUser.password,ciudad:createdUser.ciudad,userId: createdUser.id, email: createdUser.email, token: token }); //aca va lo que devuelve
 };
 
 //Listo
@@ -155,7 +156,7 @@ const login = async (req, res, next) => {
   }
 
   if (!isValidPass) {
-    const error = new HttpError("NDatos son incorrectos", 422);
+    const error = new HttpError("Datos son incorrectos", 422);
     return next(error);
   }
 
