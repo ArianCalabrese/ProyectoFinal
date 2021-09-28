@@ -14,6 +14,7 @@ import Auth from "./user/pages/Auth";
 import UserPosts from "./posts/pages/UserPosts";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
+import Home from "./Home/pages/Home";
 
 const App = () => {
   const [token, setToken] = useState(false);
@@ -35,6 +36,9 @@ const App = () => {
     routes = (
       <Switch>
         <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/usuarios" exact>
           <Users />
         </Route>
         <Route path="/agregarpost" exact>
@@ -49,13 +53,16 @@ const App = () => {
         <Route path="/posts/:postid" exact>
           <UpdatePost />
         </Route>
-        <Redirect to="/posts" exact />
+        <Redirect to="/" exact />
       </Switch>
     );
   } else {
     routes = (
       <Switch>
         <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/usuarios" exact>
           <Users />
         </Route>
         <Route path="/login" exact>
@@ -70,7 +77,7 @@ const App = () => {
         <Route path="/posts/:postid" exact>
           <UpdatePost />
         </Route>
-        <Redirect to="/login" exact />
+        <Redirect to="/" exact />
       </Switch>
     );
   }
