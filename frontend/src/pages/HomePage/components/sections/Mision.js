@@ -43,43 +43,20 @@ const Mision = () => {
           Motivaciones:
         </Typography>
         <Typography variant="body2" component="p">
-          CALM surge como una idea universitaria a raiz de la profunda necesidad
-          de miles de personas de tener un canal centralizado de informacion
-          para poder solicitar o enviar donaciones. De esta manera, poder
-          colaborar ofreciendo una plataforma para que quienes tengan interes en
-          colaborar con otras personas/agrupaciones puedan hacerlo a traves de
-          nuestra aplicacion sin problemas.
+          #NombreApp# surge como una idea universitaria a raiz de la profunda
+          necesidad de miles de personas
         </Typography>
         <Typography variant="h5" component="h2">
           Vision, Mision y Valores:
         </Typography>
         <Typography variant="body2" component="p">
-          El objetivo de CALM es llegar a ser la plataforma más grande de
-          latinoamerica en gestionar y centralizar donaciones a traves de toda
-          la región. CALM busca contribuir a la sociedad creando esta aplicación
-          sin fines de lucro, poniendo a su disposición publicaciones seguras y
-          confiables para que utilicen aquellos que deseen colaborar con una
-          causa en particular o, para aquellas personas que tengan la necesidad
-          de ser ayudadas y/o ayudar a otros. Cuando hablamos de nuestros
-          valores, hacemos referencia a los siguientes:
-          <Typography variant="body3" component="p">
-            Transparencia: La transparencia implica ser claros en la descripción
-            de los servicios y no esconder información que puede ser relevante
-            para los usuarios.
-          </Typography>
-          <Typography variant="body3" component="p">
-            Honestidad: Estamos dispuestos a anteponer la sinceridad a cualquier
-            otra consideración, aunque ello le perjudique comercialmente.
-          </Typography>
-          <Typography variant="body3" component="p">
-            Libertad: Entendemos la libertad como la posibilidad de poder
-            formular una opinión o de proponer una determinada actuación sin
-            temor a ser reprendidos por ello.
-          </Typography>
-          <Typography variant="body3" component="p">
-            Diligencia: La capacidad para ponerse manos a la obra sin dejar
-            pasar el tiempo y sin sentir pereza.
-          </Typography>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quisquam
+          consectetur eligendi iure. Vel nulla beatae optio veritatis doloremque
+          harum a dolorum id. Fuga explicabo iste laboriosam quia nesciunt
+          deleniti! Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+          Accusamus similique vitae totam quam neque optio delectus illum quia.
+          Ullam nihil odio reiciendis deserunt. Adipisci enim quam nobis
+          eligendi quos voluptate.
         </Typography>
         <Typography variant="h5" component="h2">
           Objetivos especificos
@@ -102,14 +79,11 @@ const Mision = () => {
                     component="p"
                     className={classes.pos}
                   >
-                    Pensamos CALM como una aplicacion que pueda utilizar
-                    cualquier persona del pais, y que pueda coordinar con su
-                    contraparte envios de articulos a traves de todo el pais.
-                    Para ello, llevamos adelante un sistema de gestion de envios
-                    con usuarios comprometidos a brindar su servicio de
-                    transporte que pueden utilizar o, por otra parte, se le da
-                    la libertad de elegir a traves de que medio desea
-                    transportar la mercaderia.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Eius maiores consectetur, deleniti corporis qui voluptas
+                    porro. Aliquid quae magnam exercitationem sunt voluptas
+                    quis, consectetur tempore, recusandae suscipit esse neque
+                    reiciendis?
                   </Typography>
                 </CardContent>
               </Card>
@@ -129,10 +103,11 @@ const Mision = () => {
                     component="p"
                     className={classes.pos}
                   >
-                    Publicar en nuestra aplicación no tiene ningun costo.
-                    Tenemos en consideración que quienes recurren a esta
-                    plataforma es porque precisan ayuda y nosotros no vamos a
-                    interferir negativamente en esa solicitud.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Eius maiores consectetur, deleniti corporis qui voluptas
+                    porro. Aliquid quae magnam exercitationem sunt voluptas
+                    quis, consectetur tempore, recusandae suscipit esse neque
+                    reiciendis?
                   </Typography>
                 </CardContent>
               </Card>
@@ -154,10 +129,11 @@ const Mision = () => {
                     component="p"
                     className={classes.pos}
                   >
-                    A fin de cuentas, lo unico que busca el equipo de CALM es
-                    llevar adelante un lugar con informacion centralizada en el
-                    que podamos ayudar a quienes desean colaborar con otras
-                    personas y, a quienes esten en situacion de necesidad.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Eius maiores consectetur, deleniti corporis qui voluptas
+                    porro. Aliquid quae magnam exercitationem sunt voluptas
+                    quis, consectetur tempore, recusandae suscipit esse neque
+                    reiciendis?
                   </Typography>
                 </CardContent>
               </Card>

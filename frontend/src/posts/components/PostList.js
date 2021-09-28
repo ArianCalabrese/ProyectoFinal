@@ -23,9 +23,12 @@ const PostList = (props) => {
           key={post.id}
           id={post.id}
           image={post.image}
-          name={post.name}
+          title={post.title}
           ciudad={post.ciudad}
           categoria={post.categoria}
+          
+          onDelete={props.onDeletePost}
+          creatorId={post.creator}
         />
       ))}
     </ul>

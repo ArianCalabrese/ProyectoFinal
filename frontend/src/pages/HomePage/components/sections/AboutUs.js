@@ -3,13 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import GridItem from "./GridItem";
-import avatar1 from "../../images/arian.jpg";
-
-import avatar2 from "../../images/caro.jpg";
-
-import avatar3 from "../../images/fioro.jpg";
-
-import avatar4 from "../../images/maxi.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,33 +23,32 @@ const ownersInfo = [
     rol: "Developer",
     mail: "ariancalabrese@hotmail.com",
     linkedin: "ariancalabrese",
-    img: avatar1,
-    description:
-      "23 años, Ranchos, Provincia de Buenos Aires. Estudiante de Ingenieria en Sistemas de Información en la Universidad Tecnológica Nacional (UTN).",
+    img:
+      "https://media-exp1.licdn.com/dms/image/C4E03AQGw8g2no_A_eQ/profile-displayphoto-shrink_800_800/0/1611665928413?e=1625097600&v=beta&t=ylzbgwfLZpnAeJktjU67fD5S1NgG7pkGCwBb3Y6NuU0",
   },
   {
     name: "Ruf Carolina",
     rol: "CEO",
     mail: "carolinaruf98@gmail.com",
     linkedin: "carolina-ruf-4ab55315b",
-    img: avatar2,
-    description: "ariancalabrese",
+    img:
+      "https://media-exp1.licdn.com/dms/image/C4D03AQHpI-X8MHatUQ/profile-displayphoto-shrink_800_800/0/1604094250727?e=1625097600&v=beta&t=b8Rs6WXda7inzKpXmnLRwkFGMW_RWdWLzey93pGfwg0",
   },
   {
     name: "Fiorotto Leandro",
     rol: "FEO",
     mail: "leo.fiorotto@hotmail.com",
     linkedin: "leandro-fiorotto-595a3220a",
-    img: avatar3,
-    description: "ariancalabrese",
+    img:
+      "https://media-exp1.licdn.com/dms/image/C5603AQHqcXb6FwKZHQ/profile-displayphoto-shrink_800_800/0/1619375247866?e=1625097600&v=beta&t=AiTYIWVCpBW4vMlZZGJvMWCv29whWndPaVGfDzdTIU4",
   },
   {
     name: "Maximiliano Kapko",
     rol: "CTO",
     mail: "maxi.kapko73@gmail.com",
     linkedin: "maximiliano-kapko-55b050173",
-    img: avatar4,
-    description: "ariancalabrese",
+    img:
+      "https://media-exp1.licdn.com/dms/image/C4D03AQGMTxzBqRinPg/profile-displayphoto-shrink_800_800/0/1539445995310?e=1625097600&v=beta&t=3ArEyqWiPsYh13x2mKTXpqjvSnRqcgdSweCAVGZAZso",
   },
 ];
 const AboutUs = () => {
@@ -70,7 +62,6 @@ const AboutUs = () => {
         mail={owner.mail}
         linkedin={owner.linkedin}
         img={owner.img}
-        description={owner.description}
       />
     </Grid>
   ));

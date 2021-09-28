@@ -1,7 +1,8 @@
+const fs = require('fs');
 const { uuid } = require("uuidv4");
 const { validationResult } = require("express-validator");
 const HttpError = require("../Models/http-error");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Post = require("../Models/post");
 const User = require("../Models/user");
@@ -83,14 +84,14 @@ const createPost = async (req, res, next) => {
     return next(new HttpError("Datos invalidos, chequea los datos", 422));
   }
 
-  const { title, description, categoria } = req.body;
+  const { title, description, categoria, ciudad, creator } = req.body;
   const createdPost = new Post({
     title: title,
     description: description,
     categoria: categoria,
-    imagen:
-      "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
-    creator: req.userData.userId,
+    ciudad: ciudad,
+    image: req.file.path,
+    creator: creator,
   });
 
   let user;
@@ -114,7 +115,7 @@ const createPost = async (req, res, next) => {
     await user.save({ session: session });
     await session.commitTransaction();
   } catch (err) {
-    const error = new HttpError("Falla al crear el post", 500);
+    const error = new HttpError(err, 500);
     return next(error);
   }
   res.status(201).json({ post: createdPost.toObject({ getters: true }) });
@@ -127,12 +128,12 @@ const updatePostById = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos invalidos", 422));
   }
-  const { title, description } = req.body;
+  const { title, description, ciudad, categoria, creator } = req.body;
   const postId = req.params.pid;
 
   let post;
   try {
-    post = await Post.findById(postId).populate('creator');
+    post = await Post.findById(postId).populate("creator");
   } catch (err) {
     const error = new HttpError(
       "Algo salio mal, no se pudo modificar el post",
@@ -141,9 +142,9 @@ const updatePostById = async (req, res, next) => {
     return next(error);
   }
 
-  if(post.creator.toString() !== req.userData.userId){
+  if (post.creator.id.toString() !== creator) {
     const error = new HttpError(
-      "No puedes modificar este post, no eres el creador",
+      creator + " y este es el string" + post.creator.toString(),
       401
     );
     return next(error);
@@ -154,6 +155,12 @@ const updatePostById = async (req, res, next) => {
   }
   if (description) {
     post.description = description;
+  }
+  if (ciudad) {
+    post.ciudad = ciudad;
+  }
+  if (categoria) {
+    post.categoria = categoria;
   }
 
   try {
@@ -169,27 +176,30 @@ const updatePostById = async (req, res, next) => {
 //Listo
 //Borra un post por id, /api/posts/{id} (Metodo DELETE)
 const deletePostById = async (req, res, next) => {
+  const { creator } = req.body;
   const postId = req.params.pid;
   let post;
   try {
-    post = await Post.findById(postId).populate('creator');
+    post = await Post.findById(postId).populate("creator");
   } catch (err) {
-    const error = new HttpError("No se encontro psot con ese id", 500);
+    const error = new HttpError("No se encontro post con ese id", 500);
     return next(error);
   }
 
-  if(!post){
-    const error = new HttpError('No se pudo encontrar post con ese id', 404);
+  if (!post) {
+    const error = new HttpError("No se pudo encontrar post con ese id", 404);
     return next(error);
   }
 
-  if(post.creator.id !== req.userData.userId){
+  if (post.creator.id.toString() !== creator) {
     const error = new HttpError(
-      "No puedes borrar este post, no eres el creador",
+      post.creator.id.toString() + "este el el creador" + creator,
       401
     );
     return next(error);
   }
+
+  const imagePath = post.image;
 
   try {
     const session = await mongoose.startSession();
@@ -203,6 +213,9 @@ const deletePostById = async (req, res, next) => {
     return next(error);
   }
 
+  fs.unlink(imagePath, err => {
+    console.log(err);
+  });
   res.status(200).json({ message: "Post Borrado" });
 };
 

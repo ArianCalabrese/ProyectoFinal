@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useReducer, useState, useContext } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
@@ -11,52 +11,16 @@ import {
 import "./AgregarPost.css";
 import { useForm } from "../../shared/hooks/form-hook";
 import CardPost from "../../shared/components/UiElements/CardPost";
-
-const DUMMY_POSTS = [
-  {
-    id: "p1",
-    title: "un titulo",
-    description: "una descripcion cualquiera",
-    Image:
-      "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-    name: "cama",
-    ciudad: "La Plata",
-    categoria: "Muebles",
-  },
-  {
-    id: "p2",
-    title: "un titulo segundo",
-    description: "otra descripcion cualquiera",
-    Image:
-      "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-    name: "cama2",
-    ciudad: "Berisso",
-    categoria: "Muebles",
-  },
-  {
-    id: "p3",
-    title: "algun otro titulo mas",
-    description: "otra descripcion cualquiera diferente a la anterior",
-    Image:
-      "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-    name: "cama2",
-    ciudad: "Quilmes",
-    categoria: "Muebles",
-  },
-  {
-    id: "p4",
-    title: "un titulo cuarto me canse",
-    description: "otra descripcion cualquiera vvvvvvvv",
-    Image:
-      "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-    name: "cama2",
-    ciudad: "Ranchos",
-    categoria: "Transporte",
-  },
-];
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
+import ErrorModal from "../../shared/components/UiElements/ErrorModal";
+import { AuthContext} from '../../shared/context/auth-context';
 
 const UpdatePost = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [loadedPost, setLoadedPost] = useState();
+  const history = useHistory();
   const postid = useParams().postid;
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -81,107 +45,134 @@ const UpdatePost = () => {
     false
   );
 
-  const identifiedPost = DUMMY_POSTS.find((p) => p.id === postid);
   useEffect(() => {
-    if (identifiedPost) {
-      setFormData(
-        {
-          title: {
-            value: identifiedPost.title,
-            isValid: true,
+    const fetchPost = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/posts/${postid}`
+        );
+        setLoadedPost(responseData.post);
+        setFormData(
+          {
+            title: {
+              value: responseData.post.title,
+              isValid: true,
+            },
+            description: {
+              value: responseData.post.description,
+              isValid: true,
+            },
+            ciudad: {
+              value: responseData.post.ciudad,
+              isValid: true,
+            },
+            categoria: {
+              value: responseData.post.categoria,
+              isValid: true,
+            },
           },
-          description: {
-            value: identifiedPost.description,
-            isValid: true,
-          },
-          ciudad: {
-            value: identifiedPost.ciudad,
-            isValid: true,
-          },
-          categoria: {
-            value: identifiedPost.categoria,
-            isValid: true,
-          },
-        },
-        true
-      );
-    }
+          true
+        );
+      } catch (err) {}
+    };
+    fetchPost();
+  }, [sendRequest, postid, setFormData]);
 
-    setIsLoading(false);
-  }, [setFormData, identifiedPost]);
-
-  const postUpdateSubmitHandler = (event) => {
+  const postUpdateSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(`http://localhost:5000/api/posts/${postid}`,'PATCH', JSON.stringify({
+      title: formState.inputs.title.value,
+      description: formState.inputs.description.value,
+      ciudad: formState.inputs.ciudad.value,
+      categoria: formState.inputs.categoria.value,
+      creator: auth.userId
+    }),{
+      'Content-Type': 'application/json',
+      "Authorization" : 'Bearer ' + auth.token 
+    });
+    history.push('/' + auth.userId + '/posts');
+    }catch (err){
+
+    }
+    
+    
   };
 
-  if (!identifiedPost) {
+  if (isLoading) {
+    return (
+      <div className="center">
+        <LoadingSpinner asOverlay />
+      </div>
+    );
+  }
+
+  if (!loadedPost && !error) {
     return (
       <div className="center">
         <CardPost>
-        <h2>No se encontro post</h2>
+          <h2>No se encontro post</h2>
         </CardPost>
       </div>
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="center">
-        <h2>Cargando...</h2>
-      </div>
-    );
-  }
   return (
-    <form className="place-form" onSubmit={postUpdateSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="titulo"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Ingresar titulo valido"
-        onInput={inputHandler}
-        value={formState.inputs.title.value}
-        valid={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        type="text"
-        label="descrapcion"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Ingresar descripcion valida"
-        onInput={inputHandler}
-        value={formState.inputs.description.value}
-        valid={formState.inputs.description.isValid}
-      />
-      <Input
-        id="categoria"
-        element="input"
-        type="text"
-        label="categoria"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Ingresar categoria valida"
-        onInput={inputHandler}
-        value={formState.inputs.categoria.value}
-        valid={formState.inputs.categoria.isValid}
-      />
-      <Input
-        id="ciudad"
-        element="input"
-        type="text"
-        label="ciudad"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Ingresar ciudad valida"
-        onInput={inputHandler}
-        value={formState.inputs.ciudad.value}
-        valid={formState.inputs.ciudad.isValid}
-      />
-      <Button type="submit" disabled={!formState.isValid}>
-        Actualizar post
-      </Button>
-    </form>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+
+      {!isLoading && loadedPost && (
+        <form className="place-form" onSubmit={postUpdateSubmitHandler}>
+          <Input
+            id="title"
+            element="input"
+            type="text"
+            label="titulo"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Ingresar titulo valido"
+            onInput={inputHandler}
+            value={loadedPost.title}
+            valid={true}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            type="text"
+            label="descrapcion"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Ingresar descripcion valida"
+            onInput={inputHandler}
+            value={loadedPost.description}
+            valid={true}
+          />
+          <Input
+            id="categoria"
+            element="input"
+            type="text"
+            label="categoria"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Ingresar categoria valida"
+            onInput={inputHandler}
+            value={loadedPost.categoria}
+            valid={true}
+          />
+          <Input
+            id="ciudad"
+            element="input"
+            type="text"
+            label="ciudad"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Ingresar ciudad valida"
+            onInput={inputHandler}
+            value={loadedPost.ciudad}
+            valid={true}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
+            Actualizar post
+          </Button>
+        </form>
+      )}
+    </React.Fragment>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useContext } from "react";
 
 import "./AgregarPost.css";
 import Input from "../../shared/components/FormElements/Input";
@@ -8,9 +8,16 @@ import {
 } from "../../shared/Utils/validators";
 import Button from "../../shared/components/FormElements/Button";
 import { useForm } from "../../shared/hooks/form-hook";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import ErrorModal from "../../shared/components/UiElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 
 const NuevoPost = () => {
-  const [formState, InputHandler] =  useForm(
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [formState, InputHandler] = useForm(
     {
       title: {
         value: "",
@@ -28,61 +35,88 @@ const NuevoPost = () => {
         value: "",
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     false
   );
 
-  
-
-  const postSubmitHandler = (event) => {
+  const postSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      const formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("categoria", formState.inputs.categoria.value);
+      formData.append("ciudad", formState.inputs.ciudad.value);
+      formData.append("creator", auth.userId);
+      formData.append("image", formState.inputs.image.value);
+      await sendRequest(
+        "http://localhost:5000/api/posts/agregar",
+        "POST",
+        formData,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+    } catch (err) {}
   };
 
   return (
-    <form className="place-form" onSubmit={postSubmitHandler}>
-      <h1>Agregar Post</h1>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Ingresar titulo valido"
-        onInput={InputHandler}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        type="text"
-        label="description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Ingresar descripcion valida"
-        onInput={InputHandler}
-      />
-      <Input
-        id="ciudad"
-        element="input"
-        type="text"
-        label="ciudad"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Ingresar ciudad valida"
-        onInput={InputHandler}
-      />
-      <Input
-        id="categoria"
-        element="input"
-        type="text"
-        label="categoria"
-        validators={[VALIDATOR_REQUIRE]}
-        errorText="Ingresar ciudad valida"
-        onInput={InputHandler}
-      />
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      <form className="place-form" onSubmit={postSubmitHandler}>
+        {isLoading && <LoadingSpinner asOverlay />}
+        <h1>Agregar Post</h1>
+        <Input
+          id="title"
+          element="input"
+          type="text"
+          label="title"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Ingresar titulo valido"
+          onInput={InputHandler}
+        />
+        <ImageUpload
+          id="image"
+          onInput={InputHandler}
+          errorText="Por favor, agregue una imagen"
+        />
+        <Input
+          id="description"
+          element="textarea"
+          type="text"
+          label="description"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          errorText="Ingresar descripcion valida"
+          onInput={InputHandler}
+        />
+        <Input
+          id="ciudad"
+          element="input"
+          type="text"
+          label="ciudad"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          errorText="Ingresar ciudad valida"
+          onInput={InputHandler}
+        />
+        <Input
+          id="categoria"
+          element="input"
+          type="text"
+          label="categoria"
+          validators={[VALIDATOR_REQUIRE]}
+          errorText="Ingresar ciudad valida"
+          onInput={InputHandler}
+        />
 
-      <Button type="submit" disabled={!formState.isValid}>
-        Agregar
-      </Button>
-    </form>
+        <Button type="submit" disabled={!formState.isValid}>
+          Agregar
+        </Button>
+      </form>
+    </React.Fragment>
   );
 };
 

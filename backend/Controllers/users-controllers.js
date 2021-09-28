@@ -58,9 +58,8 @@ const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos erroneos", 422));
-    console.log(errors);
   }
-  const { name, email, password } = req.body;
+  const { name, email, password, ciudad } = req.body;
 
   let existingUser;
   try {
@@ -87,8 +86,8 @@ const signup = async (req, res, next) => {
     name: name,
     email: email,
     password: hashedPassword,
-    imagen:
-      "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dainikeihin_at_Shirokanetakanawa.jpg",
+    image: req.file.path,
+    ciudad: ciudad,
     posts: [],
   });
 
@@ -113,7 +112,14 @@ const signup = async (req, res, next) => {
   }
   res
     .status(201)
-    .json({ name:createdUser.name, password: createdUser.password,ciudad:createdUser.ciudad,userId: createdUser.id, email: createdUser.email, token: token }); //aca va lo que devuelve
+    .json({
+      name: createdUser.name,
+      password: createdUser.password,
+      ciudad: createdUser.ciudad,
+      userId: createdUser.id,
+      email: createdUser.email,
+      token: token,
+    }); //aca va lo que devuelve
 };
 
 //Listo

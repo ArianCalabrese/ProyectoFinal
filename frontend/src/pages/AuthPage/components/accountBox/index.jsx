@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { LoginForm } from "./loginForm";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
 import { SignupForm } from "./signupForm";
-import { UserContext } from "../../../../Context/UserContext";
 
 const BoxContainer = styled.div`
   width: 280px;
@@ -124,9 +123,7 @@ export function AccountBox(props) {
   };
 
   const contextValue = { switchToSignup, switchToSignin };
-  const auth = useContext(UserContext);
 
-  console.log("User en Index: " + JSON.stringify(auth));
   return (
     <AccountContext.Provider value={contextValue}>
       <BoxContainer>

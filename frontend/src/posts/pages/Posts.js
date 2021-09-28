@@ -1,40 +1,34 @@
 import { PostAddSharp } from '@material-ui/icons';
-import React from 'react';
+import React, { useEffect, useReducer, useState} from 'react';
 
 import PostList from '../components/PostList';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import ErrorModal from '../../shared/components/UiElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UiElements/LoadingSpinner';
 
 const Posts = () => {
-    const POST = [
-        {
-            id: 'p1',
-            name: 'Cama',
-            image:  "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-            ciudad: 'La Plata',
-            categoria: 'Muebles'
-        },
-        {
-            id: 'p2',
-            name: 'Cama2',
-            image:  "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-            ciudad: 'Quilmes',
-            categoria: 'Muebles'
-        },
-        {
-            id: 'p3',
-            name: 'Cama3',
-            image:  "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-            ciudad: 'Ensenada',
-            categoria: 'Muebles'
-        },
-        {
-            id: 'p4',
-            name: 'Cama4',
-            image:  "https://elgourmet.s3.amazonaws.com/recetas/share/88fa3ca583e136398d5f84e8c4cf9e37_3_3_photo.png",
-            ciudad: 'Berisso',
-            categoria: 'Muebles'
-        }
-    ];
-    return <PostList items={POST} />;
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const [loadedPosts, setLoadedPosts ]= useState();
+    useEffect(()=>{
+        const fetchPosts = async () => {
+            try {
+                const responseData = await sendRequest(
+                    "http://localhost:5000/api/posts"
+                  );
+                  setLoadedPosts(responseData.posts);
+            }catch(err){}
+        };
+        fetchPosts();
+    },[sendRequest]);
+    return <React.Fragment>
+        <ErrorModal error={error} onClear={clearError}/>
+        {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+        {!isLoading && loadedPosts &&<PostList items={loadedPosts} />}
+        </React.Fragment>;
 };
 
 export default Posts;

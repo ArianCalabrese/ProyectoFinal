@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import Posts from "../pages/Posts";
 import CardPost from "../../shared/components/UiElements/CardPost";
@@ -6,9 +6,15 @@ import AvatarPost from "../../shared/components/UiElements/AvatarPost";
 import { Link } from "react-router-dom";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UiElements/Modal";
+import { AuthContext } from "../../shared/context/auth-context";
 import "./PostItem.css";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import ErrorModal from "../../shared/components/UiElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
 
 const PostItem = (props) => {
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -24,13 +30,27 @@ const PostItem = (props) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log("BORRANDO");
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/posts/${props.id}`,
+        "DELETE",
+        JSON.stringify({ 
+          creator: auth.userId         
+        }),
+        {
+          'Content-Type': 'application/json',
+          "Authorization" : 'Bearer ' + auth.token 
+        }
+      );
+      props.onDelete(props.id);
+    } catch (err) {}
   };
 
   return (
     <React.Fragment>
+      <ErrorModal error={error} onClear={clearError}/>
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -48,8 +68,12 @@ const PostItem = (props) => {
         footerClass="place-item__modal-actions"
         footer={
           <React.Fragment>
-            <Button inverse onClick={cancelDeleteHandler}>Cancelar</Button>
-            <Button danger onClick={confirmDeleteHandler}>Borrar</Button>
+            <Button inverse onClick={cancelDeleteHandler}>
+              Cancelar
+            </Button>
+            <Button danger onClick={confirmDeleteHandler}>
+              Borrar
+            </Button>
           </React.Fragment>
         }
       >
@@ -57,11 +81,12 @@ const PostItem = (props) => {
       </Modal>
       <li className="user-item">
         <CardPost>
-          <div>
-            <AvatarPost image={props.image} alt={props.name} />
+          {isLoading && <LoadingSpinner asOverlay/>}
+          <div className="place-item__image">
+            <AvatarPost image={`http://localhost:5000/${props.image}`} alt={props.title} />
           </div>
           <div>
-            <h2>{props.name}</h2>
+            <h2>{props.title}</h2>
             <h3>{props.ciudad}</h3>
             <h3>{props.categoria}</h3>
           </div>
@@ -69,10 +94,16 @@ const PostItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               Mapa
             </Button>
-            <Button edit to={`/posts/${props.id}`}>
-              Editar
-            </Button>
-            <Button danger onClick={showDeleteWarningHandler}>Borrar</Button>
+            {auth.userId === props.creatorId && (
+              <Button edit to={`/posts/${props.id}`}>
+                Editar
+              </Button>
+            )}
+            {auth.userId === props.creatorId && (
+              <Button danger onClick={showDeleteWarningHandler}>
+                Borrar
+              </Button>
+            )}
           </div>
         </CardPost>
       </li>

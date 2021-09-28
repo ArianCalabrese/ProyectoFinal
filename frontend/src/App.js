@@ -1,68 +1,82 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useCallback } from "react";
 import {
   BrowserRouter as Router,
-  Route,
   Switch,
   Redirect,
+  Route,
 } from "react-router-dom";
-import { Provider } from "react-redux";
-import HomePage from "./pages/HomePage/HomePage";
-import AuthPage from "./pages/AuthPage/AuthPage";
-import "./index.css";
-import { UserContext } from "./Context/UserContext";
-import { useHistory } from "react-router-dom";
-import UserPage from "./pages/UserPage/UserPage";
-import { useAuth } from "./shared/auth-hook";
+
+import Users from "./user/pages/Users";
+import Posts from "./posts/pages/Posts";
+import NuevoPost from "./posts/pages/AgregarPost";
+import UpdatePost from "./posts/pages/UpdatePost";
+import Auth from "./user/pages/Auth";
+import UserPosts from "./posts/pages/UserPosts";
+import MainNavigation from "./shared/components/Navigation/MainNavigation";
+import { AuthContext } from "./shared/context/auth-context";
 
 const App = () => {
-  const { token, login, logout, userId } = useAuth();
+  const [token, setToken] = useState(false);
+  const [userId, setUserId] = useState(false);
 
-  // const login = useCallback((user) => {
-  //   setUserId(user.uid);
-  //   setToken(user.token);
-  //   localStorage.setItem("user", JSON.stringify(user));
-  // }, []);
+  const login = useCallback((uid, token) => {
+    setToken(token);
+    setUserId(uid);
+  }, []);
 
-  // const logout = useCallback(() => {
-  //   setUserId(null);
-  //   setToken(null);
-  //   localStorage.clear();
-  // }, []);
+  const logout = useCallback(() => {
+    setToken(null);
+    setUserId(null);
+  }, []);
 
-  // useEffect(() => {
-  //   const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  //   console.log("LOGGED USER" + JSON.stringify(loggedInUser));
-
-  //   if (loggedInUser) {
-  //     console.log("TOKEN " + loggedInUser.token);
-  //     console.log("USER ID " + loggedInUser.userId);
-  //     login(loggedInUser);
-  //   }
-  // }, []);
-
-  //const providerValue = useMemo(() => ({ user, setUser }), [user, setUser]);
   let routes;
 
   if (token) {
     routes = (
-      <React.Fragment>
-        <Route path="/" exact component={HomePage}></Route>
-        <Route path="/user/:userId" exact component={UserPage}></Route>
-      </React.Fragment>
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/agregarpost" exact>
+          <NuevoPost />
+        </Route>
+        <Route path="/posts" exact>
+          <Posts />
+        </Route>
+        <Route path="/:userId/posts" exact>
+          <UserPosts />
+        </Route>
+        <Route path="/posts/:postid" exact>
+          <UpdatePost />
+        </Route>
+        <Redirect to="/posts" exact />
+      </Switch>
     );
   } else {
     routes = (
-      <React.Fragment>
-        <Route path="/" exact component={HomePage}></Route>
-        <Route path="/login" exact component={AuthPage}></Route>
-        {/* <Redirect to="/login" /> */}
-      </React.Fragment>
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/login" exact>
+          <Auth />
+        </Route>
+        <Route path="/posts" exact>
+          <Posts />
+        </Route>
+        <Route path="/:userId/posts" exact>
+          <UserPosts />
+        </Route>
+        <Route path="/posts/:postid" exact>
+          <UpdatePost />
+        </Route>
+        <Redirect to="/login" exact />
+      </Switch>
     );
   }
 
   return (
-    <UserContext.Provider
+    <AuthContext.Provider
       value={{
         isLoggedIn: !!token,
         token: token,
@@ -72,31 +86,11 @@ const App = () => {
       }}
     >
       <Router>
-        <Switch>{routes}</Switch>
+        <MainNavigation />
+        <main>{routes}</main>
       </Router>
-    </UserContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
 export default App;
-
-// let routes;
-
-// routes = (
-//   <Switch>
-//     <UserContext.Provider value="Hello from context">
-//       <Route path="/" exact>
-//         <HomePage />
-//       </Route>
-//       <Route path="/login" exact>
-//         <AuthPage />
-//       </Route>
-//     </UserContext.Provider>
-//   </Switch>
-// );
-
-// ReactDOM.render(
-//   <Router>{routes}</Router>,
-
-//   document.getElementById("root")
-// );

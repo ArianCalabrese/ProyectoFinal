@@ -19,7 +19,7 @@ const TopSection = () => {
   return (
       <CardMedia
         className={classes.media}
-        image="https://www.doorwaysarizona.com/wp-content/uploads/2013/10/bigstock-portrait-of-a-happy-and-divers-19389686.jpg"
+        image="https://wallpapercave.com/wp/wp2752752.jpg"
       />
   );
 };
