@@ -15,6 +15,7 @@ import UserPosts from "./posts/pages/UserPosts";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
 import Home from "./Home/pages/Home";
+import Buscador from "./posts/pages/BuscarPosts";
 
 const App = () => {
   const [token, setToken] = useState(false);
@@ -40,6 +41,9 @@ const App = () => {
         </Route>
         <Route path="/usuarios" exact>
           <Users />
+        </Route>
+        <Route path="/buscarpost" exact>
+          <Buscador />
         </Route>
         <Route path="/agregarpost" exact>
           <NuevoPost />

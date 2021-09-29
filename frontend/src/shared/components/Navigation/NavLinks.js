@@ -28,6 +28,9 @@ const NavLinks = (props) => {
         <NavLink to="/agregarpost">Agregar Post</NavLink>
       </li>}
       {auth.isLoggedIn && <li>
+        <NavLink to="buscarpost">Buscar Post</NavLink>
+      </li>}
+      {auth.isLoggedIn && <li>
         <button onClick={auth.logout}>Logout</button>
         </li>}
     </ul>
