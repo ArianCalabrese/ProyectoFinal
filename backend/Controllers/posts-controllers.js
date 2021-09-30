@@ -243,6 +243,52 @@ const getPostsByCategory = async (req, res, next) => {
   res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
 };
 
+const getPostsByCiudad = async (req, res, next) => {
+  const ciudad = req.params.ciudad;
+  let posts;
+  try {
+    posts = await Post.find({ ciudad: ciudad });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontron posts de esa ciudad", 500);
+    return next(error);
+  }
+
+  if (!posts || posts.length === 0) {
+    const error = new HttpError(
+      "No se encontro ningun post de esa ciudad",
+      404
+    );
+    return next(error);
+  }
+
+  res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
+};
+
+const getPostsByCategoriaCiudad = async (req, res, next) => {
+  const ciudad = req.params.ciudad;
+  const categoria = req.params.categoria;
+  let posts;
+  try {
+    posts = await Post.find({ ciudad: ciudad , categoria: categoria});
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontron posts con esa combinacion", 500);
+    return next(error);
+  }
+
+  if (!posts || posts.length === 0) {
+    const error = new HttpError(
+      "No se encontro ningun post con esa combinacion",
+      404
+    );
+    return next(error);
+  }
+
+  res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
+};
+
+
 exports.getPosts = getPosts;
 exports.createPost = createPost;
 exports.getPostById = getPostById;
@@ -250,3 +296,6 @@ exports.getPostsByUserId = getPostsByUserId;
 exports.updatePostById = updatePostById;
 exports.deletePostById = deletePostById;
 exports.getPostsByCategory = getPostsByCategory;
+exports.getPostsByCiudad = getPostsByCiudad;
+exports.getPostsByCategoriaCiudad = getPostsByCategoriaCiudad;
+

@@ -15,6 +15,10 @@ router.get("/user/:uid", postsControllers.getPostsByUserId);
 
 router.get("/categoria/:categoria", postsControllers.getPostsByCategory);
 
+router.get("/ciudad/:ciudad", postsControllers.getPostsByCiudad);
+
+router.get("/buscar/:categoria/:ciudad", postsControllers.getPostsByCategoriaCiudad);
+
 router.use(checkAuth);
 
 router.post(
