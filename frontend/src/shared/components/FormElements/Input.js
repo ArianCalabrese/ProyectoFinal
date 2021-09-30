@@ -73,6 +73,7 @@ const Input = (props) => {
     );
   } else if (props.element === "select_categoria") {
     element = (
+      
       <select
         id={props.id}
         onChange={changeHandler}
@@ -84,20 +85,24 @@ const Input = (props) => {
         <option value="Alimento">Alimento</option>
         <option value="Transporte">Transporte</option>
       </select>
+      
     );
   } else if (props.element === "select_ciudad") {
     element = (
+      
       <select
+        className='select_ciudad'
         id={props.id}
         onChange={changeHandler}
         onBlur={touchHandler}
         value={inputState.value}
       >
         <option value="">Seleccione</option>
-        <option value="LaPlata">La Plata</option>
+        <option value="La Plata">La Plata</option>
         <option value="Berisso">Berisso</option>
         <option value="Ensenada">Ensenada</option>
       </select>
+      
     );
   }
 

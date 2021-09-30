@@ -69,20 +69,20 @@ const Buscador = () => {
         )}
         <Input
           id="categoria"
-          element="input"
-          type="text"
+          element="select_categoria"
+          type="select"
           label="categoria"
           validators={[]}
-          errorText="Ingresar categoria valida"
+          errorText=""
           onInput={inputHandler}
         />
          <Input
           id="ciudad"
-          element="input"
-          type="text"
+          element="select_ciudad"
+          type="select"
           label="ciudad"
           validators={[]}
-          errorText="Ingresar ciudadvalida"
+          errorText=""
           onInput={inputHandler}
         />
         <Button type="submit">Buscar</Button>

@@ -95,8 +95,8 @@ const NuevoPost = () => {
         />
         <Input
           id="ciudad"
-          element="input"
-          type="text"
+          element="select_ciudad"
+          type="select"
           label="ciudad"
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText="Ingresar ciudad valida"
@@ -104,8 +104,8 @@ const NuevoPost = () => {
         />
         <Input
           id="categoria"
-          element="input"
-          type="text"
+          element="select_categoria"
+          type="select"
           label="categoria"
           validators={[VALIDATOR_REQUIRE]}
           errorText="Ingresar ciudad valida"
