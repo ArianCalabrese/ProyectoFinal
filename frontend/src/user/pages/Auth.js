@@ -157,7 +157,7 @@ const Auth = () => {
           />
           {!isLoginMode && (
             <Input
-              element="input"
+              element="select_ciudad"
               id="ciudad"
               type="text"
               label="ciudad"

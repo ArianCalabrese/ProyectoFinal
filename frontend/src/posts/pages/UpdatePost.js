@@ -22,7 +22,7 @@ const UpdatePost = () => {
   const [loadedPost, setLoadedPost] = useState();
   const history = useHistory();
   const postid = useParams().postid;
-
+console.log(auth);
   const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
@@ -147,7 +147,7 @@ const UpdatePost = () => {
           />
           <Input
             id="categoria"
-            element="input"
+            element="select_categoria"
             type="text"
             label="categoria"
             validators={[VALIDATOR_MINLENGTH(5)]}
@@ -158,7 +158,7 @@ const UpdatePost = () => {
           />
           <Input
             id="ciudad"
-            element="input"
+            element="select_ciudad"
             type="text"
             label="ciudad"
             validators={[VALIDATOR_MINLENGTH(5)]}
