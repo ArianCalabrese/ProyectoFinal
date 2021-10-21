@@ -36,12 +36,12 @@ const PostItem = (props) => {
       await sendRequest(
         `http://localhost:5000/api/posts/${props.id}`,
         "DELETE",
-        JSON.stringify({ 
-          creator: auth.userId         
+        JSON.stringify({
+          creator: auth.userId,
         }),
         {
-          'Content-Type': 'application/json',
-          "Authorization" : 'Bearer ' + auth.token 
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
       props.onDelete(props.id);
@@ -50,7 +50,7 @@ const PostItem = (props) => {
 
   return (
     <React.Fragment>
-      <ErrorModal error={error} onClear={clearError}/>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -81,9 +81,12 @@ const PostItem = (props) => {
       </Modal>
       <li className="user-item">
         <CardPost>
-          {isLoading && <LoadingSpinner asOverlay/>}
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
-            <AvatarPost image={`http://localhost:5000/${props.image}`} alt={props.title} />
+            <AvatarPost
+              image={`http://localhost:5000/${props.image}`}
+              alt={props.title}
+            />
           </div>
           <div>
             <h2>{props.title}</h2>

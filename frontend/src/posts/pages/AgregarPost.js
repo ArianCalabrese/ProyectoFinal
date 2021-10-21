@@ -13,9 +13,12 @@ import { AuthContext } from "../../shared/context/auth-context";
 import ErrorModal from "../../shared/components/UiElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
 import ImageUpload from "../../shared/components/FormElements/ImageUpload";
-
+import { UserContext } from "../../Context/UserContext";
+import MainNavigation from "../../shared/components/Navigation/MainNavigation";
 const NuevoPost = () => {
-  const auth = useContext(AuthContext);
+  //const auth = useContext(AuthContext);
+  const auth = useContext(UserContext);
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, InputHandler] = useForm(
     {
@@ -66,6 +69,7 @@ const NuevoPost = () => {
 
   return (
     <React.Fragment>
+      <MainNavigation />
       <ErrorModal error={error} onClear={clearError} />
       <form className="place-form" onSubmit={postSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}

@@ -3,6 +3,8 @@ import React from "react";
 import PostItem from "./PostItem";
 import CardPost from "../../shared/components/UiElements/CardPost";
 import Button from "../../shared/components/FormElements/Button";
+import PostCard from "./PostCard";
+import { Box } from "@mui/system";
 
 const PostList = (props) => {
   if (props.items.length === 0) {
@@ -17,21 +19,38 @@ const PostList = (props) => {
   }
 
   return (
-    <ul className="users-list">
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: "column",
+        "& > :not(style)": {
+          m: 1,
+        },
+      }}
+    >
       {props.items.map((post) => (
-        <PostItem
+        <PostCard
           key={post.id}
           id={post.id}
           image={post.image}
           title={post.title}
           ciudad={post.ciudad}
           categoria={post.categoria}
-          
-          onDelete={props.onDeletePost}
-          creatorId={post.creator}
         />
+        // <PostItem
+        //   key={post.id}
+        //   id={post.id}
+        //   image={post.image}
+        //   title={post.title}
+        //   ciudad={post.ciudad}
+        //   categoria={post.categoria}
+
+        //   onDelete={props.onDeletePost}
+        //   creatorId={post.creator}
+        // />
       ))}
-    </ul>
+    </Box>
   );
 };
 

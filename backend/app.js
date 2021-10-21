@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/uploads/images', express.static(path.join('uploads','images')));
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  res.setHeader("Access-Control-Allow-Methods", 'GET, POST, PATCH, DELETE');
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
   next();
 });
 
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  if(req.file){
+  if (req.file) {
     fs.unlink(req.file.path, (err) => {
       console.log(err);
     });
@@ -51,7 +51,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://AdminMaxi:proyectofinal2021@cluster0.27mee.mongodb.net/posts?retryWrites=true&w=majority"
+    "mongodb+srv://ariancalabrese:proyectoFinal@finalprojectcluster.b8pxz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
   )
   .then(() => {
     app.listen(5000);

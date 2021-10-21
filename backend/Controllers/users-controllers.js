@@ -55,11 +55,12 @@ const getUsersByCiudad = async (req, res, next) => {
 //Registrar usuario, nombre, email, password y ciudad son requeridos
 // /api/users/signup
 const signup = async (req, res, next) => {
+  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos erroneos", 422));
   }
-  const { name, email, password, ciudad } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -86,8 +87,7 @@ const signup = async (req, res, next) => {
     name: name,
     email: email,
     password: hashedPassword,
-    image: req.file.path,
-    ciudad: ciudad,
+    image: req.body.image,
     posts: [],
   });
 
@@ -110,16 +110,13 @@ const signup = async (req, res, next) => {
     const error = new HttpError("Error al crear el token", 500);
     return next(error);
   }
-  res
-    .status(201)
-    .json({
-      name: createdUser.name,
-      password: createdUser.password,
-      ciudad: createdUser.ciudad,
-      userId: createdUser.id,
-      email: createdUser.email,
-      token: token,
-    }); //aca va lo que devuelve
+  res.status(201).json({
+    name: createdUser.name,
+    password: createdUser.password,
+    userId: createdUser.id,
+    email: createdUser.email,
+    token: token,
+  }); //aca va lo que devuelve
 };
 
 //Listo

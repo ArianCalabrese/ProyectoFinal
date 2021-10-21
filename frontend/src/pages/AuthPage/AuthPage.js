@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./AuthPage.css";
 import styled from "styled-components";
 import { AccountBox } from "./components/accountBox";
+import { UserContext } from "../../Context/UserContext";
 
 const AuthContainer = styled.div`
   width: 100%;
@@ -13,6 +14,9 @@ const AuthContainer = styled.div`
 `;
 
 function AuthPage() {
+  const auth = useContext(UserContext);
+
+  console.log("User en AuthPage: " + JSON.stringify(auth));
   return (
     <AuthContainer>
       <AccountBox />

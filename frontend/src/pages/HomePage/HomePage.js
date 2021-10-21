@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
-//import { ThemeProvider } from "@material-ui/core/styles";
+import React, { useEffect, useState, useContext } from "react";
+import { ThemeProvider } from "@material-ui/core/styles";
 import NavBar from "./components/NavBar";
 import AboutUs from "./components/sections/AboutUs";
-//import Container from "@material-ui/core/Container";
+import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import TopSection from "./components/sections/TopSection";
@@ -12,9 +12,10 @@ import Footer from "./components/sections/Footer";
 import Mision from "./components/sections/Mision";
 import Sponsors from "./components/sections/Sponsors";
 import TestSponsor from "./components/sections/TestSponsor";
-import { AuthContext } from "../../shared/context/auth-context";
-//me tira error
-//import ProgressBar from "../../../react-progressbar-on-scroll";
+//import ProgressBar from "react-progressbar-on-scroll";
+import { UserContext } from "../../Context/UserContext";
+import MainNavigation from "../../shared/components/Navigation/MainNavigation";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: 0,
@@ -32,61 +33,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HomePage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
-
   const classes = useStyles();
-  <div id="modal-hook"></div>;
+  const { user, setUser } = useContext(UserContext);
   return (
     <div className={classes.root}>
-      <AuthContext.Provider
-        value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
-      >
-        <NavBar />
-        <TopSection />
-        <Box>
-          <Typography component="div" className={classes.titulo}>
-            <Typography variant="h3" component="h2" align="center">
-              Nuestra Historia
-            </Typography>
+      <MainNavigation />
+      <TopSection />
+      <Box>
+        <Typography component="div" className={classes.titulo}>
+          <Typography variant="h3" component="h2" align="center">
+            Nuestra Historia
           </Typography>
-        </Box>
-        <Mision />
-        <Box>
-          <Typography component="div" className={classes.titulo}>
-            <Typography variant="h3" component="h2" align="center">
-              Top Posts
-            </Typography>
+        </Typography>
+      </Box>
+      <Mision />
+      <Box>
+        <Typography component="div" className={classes.titulo}>
+          <Typography variant="h3" component="h2" align="center">
+            Top Posts
           </Typography>
-        </Box>
+        </Typography>
+      </Box>
 
-        <MostValuablePosts />
-        <Box>
-          <Typography component="div" className={classes.titulo}>
-            <Typography variant="h3" component="h2" align="center">
-              Nosotros
-            </Typography>
+      <MostValuablePosts />
+      <Box>
+        <Typography component="div" className={classes.titulo}>
+          <Typography variant="h3" component="h2" align="center">
+            Nosotros
           </Typography>
-        </Box>
-        <AboutUs />
-        <Box>
-          <Typography component="div" className={classes.titulo}>
-            <Typography variant="h3" component="h2" align="center">
-              Sponsors
-            </Typography>
+        </Typography>
+      </Box>
+      <AboutUs />
+      <Box>
+        <Typography component="div" className={classes.titulo}>
+          <Typography variant="h3" component="h2" align="center">
+            Sponsors
           </Typography>
-        </Box>
-        <Sponsors />
-        <TestSponsor />
-        <Footer />
-      </AuthContext.Provider>
+        </Typography>
+      </Box>
+      <Sponsors />
+      {/* <TestSponsor /> */}
+      <Footer />
     </div>
   );
 };
