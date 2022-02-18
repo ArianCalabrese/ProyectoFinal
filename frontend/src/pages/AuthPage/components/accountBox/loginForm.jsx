@@ -10,7 +10,7 @@ import {
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import Axios from "axios";
-import { UserContext } from "../../../../Context/UserContext";
+import { UserContext } from "../../../../shared/context/UserContext";
 import { useHistory } from "react-router-dom";
 
 export function LoginForm(props) {
@@ -33,10 +33,6 @@ export function LoginForm(props) {
         console.log(response);
         console.log(response.data);
         auth.login(response.data.userId, response.data.token);
-        // console.log(response);
-        // setUser("Pete de mierda");
-        // console.log(response.data);
-        // console.log(user);
         history.push("/");
       })
       .catch((err) => {

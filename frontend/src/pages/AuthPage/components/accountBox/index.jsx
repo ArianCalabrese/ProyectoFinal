@@ -4,7 +4,7 @@ import { LoginForm } from "./loginForm";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
 import { SignupForm } from "./signupForm";
-import { UserContext } from "../../../../Context/UserContext";
+import { UserContext } from "../../../../shared/context/UserContext";
 
 const BoxContainer = styled.div`
   width: 280px;

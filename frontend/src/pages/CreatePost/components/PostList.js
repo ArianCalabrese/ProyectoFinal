@@ -1,8 +1,8 @@
 import React from "react";
 
 import PostItem from "./PostItem";
-import CardPost from "../../shared/components/UiElements/CardPost";
-import Button from "../../shared/components/FormElements/Button";
+import CardPost from "../../../shared/components/UiElements/CardPost";
+import Button from "../../../shared/components/FormElements/Button";
 import PostCard from "./PostCard";
 import { Box } from "@mui/system";
 

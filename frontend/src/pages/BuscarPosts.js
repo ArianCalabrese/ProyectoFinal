@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import PostList from "../components/PostList";
-import ErrorModal from "../../shared/components/UiElements/ErrorModal";
-import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import Input from "../../shared/components/FormElements/Input";
-import Button from "../../shared/components/FormElements/Button";
-import { useForm } from "../../shared/hooks/form-hook";
-import { VALIDATOR_REQUIRE } from "../../shared/Utils/validators";
+import ErrorModal from "../shared/components/UiElements/ErrorModal";
+import LoadingSpinner from "../shared/components/UiElements/LoadingSpinner";
+import { useHttpClient } from "../shared/hooks/http-hook";
+import Input from "../shared/components/FormElements/Input";
+import Button from "../shared/components/FormElements/Button";
+import { useForm } from "../shared/hooks/form-hook";
+import PostList from "./CreatePost/components/PostList";
 
 const Buscador = () => {
   const [loadedPosts, setLoadedPosts] = useState();

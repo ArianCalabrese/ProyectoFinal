@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 const { uuid } = require("uuidv4");
 const { validationResult } = require("express-validator");
 const HttpError = require("../Models/http-error");
@@ -79,6 +79,7 @@ const getPostsByUserId = async (req, res, next) => {
 //Crea un post nuevo, titulo, descripcion y categoria son obligatorios
 // /api/posts ( metodo POST)
 const createPost = async (req, res, next) => {
+  console.log(req);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos invalidos, chequea los datos", 422));
@@ -90,7 +91,7 @@ const createPost = async (req, res, next) => {
     description: description,
     categoria: categoria,
     ciudad: ciudad,
-    image: req.file.path,
+    image: req.body.image,
     creator: creator,
   });
 
@@ -98,6 +99,7 @@ const createPost = async (req, res, next) => {
   try {
     user = await User.findById(req.userData.userId);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fallo la creacion del post", 500);
     return next(error);
   }
@@ -213,7 +215,7 @@ const deletePostById = async (req, res, next) => {
     return next(error);
   }
 
-  fs.unlink(imagePath, err => {
+  fs.unlink(imagePath, (err) => {
     console.log(err);
   });
   res.status(200).json({ message: "Post Borrado" });
@@ -270,10 +272,13 @@ const getPostsByCategoriaCiudad = async (req, res, next) => {
   const categoria = req.params.categoria;
   let posts;
   try {
-    posts = await Post.find({ ciudad: ciudad , categoria: categoria});
+    posts = await Post.find({ ciudad: ciudad, categoria: categoria });
   } catch (err) {
     console.log(err);
-    const error = new HttpError("No se encontron posts con esa combinacion", 500);
+    const error = new HttpError(
+      "No se encontron posts con esa combinacion",
+      500
+    );
     return next(error);
   }
 
@@ -288,7 +293,6 @@ const getPostsByCategoriaCiudad = async (req, res, next) => {
   res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
 };
 
-
 exports.getPosts = getPosts;
 exports.createPost = createPost;
 exports.getPostById = getPostById;
@@ -298,4 +302,3 @@ exports.deletePostById = deletePostById;
 exports.getPostsByCategory = getPostsByCategory;
 exports.getPostsByCiudad = getPostsByCiudad;
 exports.getPostsByCategoriaCiudad = getPostsByCategoriaCiudad;
-

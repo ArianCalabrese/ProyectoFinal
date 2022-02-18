@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import MainNavigation from "../../shared/components/Navigation/MainNavigation";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import PostList from "../../posts/components/PostList";
+import PostList from "../CreatePost/components/PostList";
 import ErrorModal from "../../shared/components/UiElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
 

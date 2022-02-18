@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -9,7 +9,7 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import { UserContext } from "../../../../Context/UserContext";
+import { UserContext } from "../../../../shared/context/UserContext";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 

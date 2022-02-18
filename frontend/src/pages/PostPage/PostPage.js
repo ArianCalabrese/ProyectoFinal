@@ -1,9 +1,17 @@
-import { Paper } from "@material-ui/core";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Modal,
+  Paper,
+} from "@material-ui/core";
 import { ImageList, ImageListItem, ListItem, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import MainNavigation from "../../shared/components/Navigation/MainNavigation";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Button from "../../shared/components/FormElements/Button";
+import MyCards from "./components/Card";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -14,7 +22,37 @@ function srcset(image, size, rows = 1, cols = 1) {
   };
 }
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
 const PostPage = () => {
+  const [open, setOpen] = useState(false);
+  const [openGoods, setGoodsOpen] = useState(false);
+
+  const handleMoneyOpen = () => {
+    setOpen(true);
+  };
+  const handleMoneyClose = () => {
+    setOpen(false);
+  };
+
+  const handleGoodsOpen = () => {
+    setGoodsOpen(true);
+  };
+  const handleGoodsClose = () => {
+    setGoodsOpen(false);
+  };
   return (
     <React.Fragment>
       <MainNavigation />
@@ -187,7 +225,7 @@ const PostPage = () => {
                     <img
                       src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
                       srcSet="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-                      alt="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                      alt={"testing"}
                       loading="lazy"
                       style={{ maxHeight: "80px", maxWidth: "80px" }}
                     />
@@ -199,7 +237,53 @@ const PostPage = () => {
           <Box
             sx={{ flex: "1", backgroundColor: "blue" }}
             className="secondaryDataWrapper"
-          ></Box>
+          >
+            <Button onClick={handleMoneyOpen}>Donar dinero</Button>
+            <Button onClick={handleGoodsOpen}>Donar bienes</Button>
+            <Modal
+              open={open}
+              onClose={handleMoneyClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Seleccione lo que desea donar
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Duis mollis, est non commodo luctus, nisi erat porttitor
+                  ligula.
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    value="end"
+                    control={<Checkbox />}
+                    label="End"
+                  />
+                  <FormControlLabel
+                    value="end"
+                    control={<Checkbox />}
+                    label="End"
+                  />
+                  <FormControlLabel
+                    value="end"
+                    control={<Checkbox />}
+                    label="End"
+                  />
+                </FormGroup>
+              </Box>
+            </Modal>
+            <Modal
+              open={open}
+              onClose={handleMoneyClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box>
+                <MyCards />
+              </Box>
+            </Modal>
+          </Box>
         </Paper>
       </Box>
     </React.Fragment>

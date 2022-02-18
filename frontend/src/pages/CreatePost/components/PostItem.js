@@ -1,20 +1,19 @@
 import React, { useState, useContext } from "react";
 
-import Posts from "../pages/Posts";
-import CardPost from "../../shared/components/UiElements/CardPost";
-import AvatarPost from "../../shared/components/UiElements/AvatarPost";
+import CardPost from "../../../shared/components/UiElements/CardPost";
+import AvatarPost from "../../../shared/components/UiElements/AvatarPost";
 import { Link } from "react-router-dom";
-import Button from "../../shared/components/FormElements/Button";
-import Modal from "../../shared/components/UiElements/Modal";
-import { AuthContext } from "../../shared/context/auth-context";
+import Button from "../../../shared/components/FormElements/Button";
+import Modal from "../../../shared/components/UiElements/Modal";
 import "./PostItem.css";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import ErrorModal from "../../shared/components/UiElements/ErrorModal";
-import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import ErrorModal from "../../../shared/components/UiElements/ErrorModal";
+import LoadingSpinner from "../../../shared/components/UiElements/LoadingSpinner";
+import { UserContext } from "../../../shared/context/UserContext";
 
 const PostItem = (props) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const auth = useContext(AuthContext);
+  const auth = useContext(UserContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 

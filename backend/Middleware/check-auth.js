@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../Models/http-error");
 
 module.exports = (req, res, next) => {
+  console.log(req)
   if (req.method === "OPTIONS") {
     return next();
   }
@@ -15,6 +16,7 @@ module.exports = (req, res, next) => {
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {
+    //console.log(err);
     const error = new HttpError("Fallo la autenticacion!!!", 401);
     return next(error);
   }

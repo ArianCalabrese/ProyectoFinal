@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
-import NavBar from "./components/NavBar";
+import React from "react";
 import AboutUs from "./components/sections/AboutUs";
-import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import TopSection from "./components/sections/TopSection";
@@ -11,9 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Footer from "./components/sections/Footer";
 import Mision from "./components/sections/Mision";
 import Sponsors from "./components/sections/Sponsors";
-import TestSponsor from "./components/sections/TestSponsor";
-//import ProgressBar from "react-progressbar-on-scroll";
-import { UserContext } from "../../Context/UserContext";
 import MainNavigation from "../../shared/components/Navigation/MainNavigation";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 const HomePage = () => {
   const classes = useStyles();
-  const { user, setUser } = useContext(UserContext);
   return (
     <div className={classes.root}>
       <MainNavigation />
@@ -72,7 +65,6 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Sponsors />
-      {/* <TestSponsor /> */}
       <Footer />
     </div>
   );

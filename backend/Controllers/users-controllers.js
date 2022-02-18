@@ -87,7 +87,6 @@ const signup = async (req, res, next) => {
     name: name,
     email: email,
     password: hashedPassword,
-    image: req.body.image,
     posts: [],
   });
 
@@ -176,7 +175,7 @@ const login = async (req, res, next) => {
 
   res
     .status(201)
-    .json({ userId: existingUser.id, email: existingUser.email, token: token }); //aca va lo que devuelve
+    .json({ userId: existingUser.id, email: existingUser.email, token: token });
 };
 
 exports.getUsers = getUsers;

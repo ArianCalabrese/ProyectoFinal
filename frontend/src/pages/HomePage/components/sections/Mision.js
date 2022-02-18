@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   large: {
-    width: theme.spacing(10),
     height: theme.spacing(10),
     marginLeft: "0",
     marginRight: "0",

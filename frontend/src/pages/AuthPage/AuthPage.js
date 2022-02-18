@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./AuthPage.css";
 import styled from "styled-components";
 import { AccountBox } from "./components/accountBox";
-import { UserContext } from "../../Context/UserContext";
+import { UserContext } from "../../shared/context/UserContext";
 
 const AuthContainer = styled.div`
   width: 100%;

@@ -1,5 +1,4 @@
 import React from "react";
-import Carousel from "../Carousel";
 import InfiniteCarousel from "react-leaf-carousel";
 
 const Sponsors = () => {
@@ -36,6 +35,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -43,6 +43,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -50,6 +51,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -57,6 +59,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -64,6 +67,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -71,6 +75,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -78,6 +83,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -85,6 +91,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
       <div>
@@ -92,6 +99,7 @@ const Sponsors = () => {
           className="team-image"
           src="https://logodownload.org/wp-content/uploads/2014/04/McDonalds-logo-1.png"
           style={{ maxWidth: 200 }}
+          alt="a"
         />
       </div>
     </InfiniteCarousel>

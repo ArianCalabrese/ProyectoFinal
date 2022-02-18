@@ -3,18 +3,13 @@ import {
   AppBar,
   makeStyles,
   Toolbar,
-  Typography,
   IconButton,
-  Button,
   List,
   ListItem,
   ListItemText,
   Container,
   Hidden,
 } from "@material-ui/core";
-import { NavLink, Link } from "react-router-dom";
-
-import MenuIcon from "@material-ui/icons/Menu";
 import { Home } from "@material-ui/icons";
 import SideDrawer from "./SideDrawer";
 import HideOnSCroll from "./HideOnScroll";
