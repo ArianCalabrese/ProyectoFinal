@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const Post = require("../Models/post");
 const User = require("../Models/user");
+const Donation = require("../Models/donaciones");
 const mongooseUniqueValidator = require("mongoose-unique-validator");
 
 //Listo
@@ -46,7 +47,7 @@ const getPostById = async (req, res, next) => {
     const error = new HttpError("No se encontro ningun post con ese id", 404);
     return next(error);
   }
-
+  console.log(post);
   res.json({ post: post.toObject({ getters: true }) });
 };
 
@@ -65,27 +66,23 @@ const getPostsByUserId = async (req, res, next) => {
   }
 
   if (!posts || posts.length === 0) {
-    const error = new HttpError(
-      "No se encontro ningun post de ese usuario",
-      404
-    );
-    return next(error);
+    res.json({ posts: [] });
+  } else {
+    res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
   }
-
-  res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
 };
 
 //Listo
 //Crea un post nuevo, titulo, descripcion y categoria son obligatorios
 // /api/posts ( metodo POST)
 const createPost = async (req, res, next) => {
-  console.log(req);
+  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos invalidos, chequea los datos", 422));
   }
 
-  const { title, description, categoria, ciudad, creator } = req.body;
+  const { title, description, categoria, ciudad, creator, items } = req.body;
   const createdPost = new Post({
     title: title,
     description: description,
@@ -93,11 +90,12 @@ const createPost = async (req, res, next) => {
     ciudad: ciudad,
     image: req.body.image,
     creator: creator,
+    items: items,
   });
 
   let user;
   try {
-    user = await User.findById(req.userData.userId);
+    user = await User.findById(req.body.creator);
   } catch (err) {
     console.log(err);
     const error = new HttpError("Fallo la creacion del post", 500);
@@ -117,6 +115,7 @@ const createPost = async (req, res, next) => {
     await user.save({ session: session });
     await session.commitTransaction();
   } catch (err) {
+    console.log(err);
     const error = new HttpError(err, 500);
     return next(error);
   }
@@ -293,6 +292,130 @@ const getPostsByCategoriaCiudad = async (req, res, next) => {
   res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
 };
 
+const setDonation = async (req, res, next) => {
+  //console.log(req.body);
+  const { items, donator, post_name, post_creator_id } = req.body;
+  console.log(items);
+  const postId = req.params.pid;
+  console.log(postId);
+  let post;
+  try {
+    post = await Post.updateOne(
+      { _id: postId },
+      {
+        $set: {
+          items: items,
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("Error", 500);
+    return next(error);
+  }
+
+  if (!post) {
+    const error = new HttpError("Error", 404);
+    return next(error);
+  }
+  //donations
+  const createdDonation = new Donation({
+    post: postId,
+    donator: donator,
+    items: items,
+    post_name: post_name,
+    post_creator_id: post_creator_id,
+  });
+  try {
+    await createdDonation.save();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("Falla al crear la donacion", 500);
+    return next(error);
+  }
+  res
+    .status(200)
+    .json({ donation: createdDonation.toObject({ getters: true }) });
+};
+
+const getDonationsByUserId = async (req, res, next) => {
+  const donator = req.params.uid;
+
+  let donations;
+  try {
+    donations = await Donation.find({ donator: donator });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      "No se encontron donaciones de ese usuario",
+      500
+    );
+    return next(error);
+  }
+  console.log(donations);
+  if (!donations || donations.length === 0) {
+    res.json({ donations: [] });
+  } else {
+    res.json({
+      donations: donations.map((donations) =>
+        donations.toObject({ getters: true })
+      ),
+    });
+  }
+};
+
+const getDonationsRealizadasByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+
+  let donations;
+  try {
+    donations = await Donation.find({ post_creator_id: userId });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      "No se encontron donaciones de ese usuario",
+      500
+    );
+    return next(error);
+  }
+  console.log(donations);
+  if (!donations || donations.length === 0) {
+    res.json({ donations: [] });
+  } else {
+    res.json({
+      donations: donations.map((donations) =>
+        donations.toObject({ getters: true })
+      ),
+    });
+  }
+};
+
+const getDonations = async (req, res, next) => {
+  let donations;
+  try {
+    donations = await Donation.find();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontron donations", 500);
+    return next(error);
+  }
+  if (!donations || donations.length === 0) {
+    const error = new HttpError(
+      "No se encontro ningun post den la base de datos",
+      404
+    );
+    return next(error);
+  }
+  res.json({
+    donations: donations.map((donation) =>
+      donation.toObject({ getters: true })
+    ),
+  });
+};
+exports.getDonationsRealizadasByUserId = getDonationsRealizadasByUserId;
+exports.getDonationsByUserId = getDonationsByUserId;
+exports.getDonations = getDonations;
+exports.setDonation = setDonation;
 exports.getPosts = getPosts;
 exports.createPost = createPost;
 exports.getPostById = getPostById;

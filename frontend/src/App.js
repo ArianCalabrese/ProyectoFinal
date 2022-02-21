@@ -10,6 +10,9 @@ import { useAuth } from "./shared/auth-hook";
 import Chat from "./pages/ChatPage/components/Chat";
 import Buscador from "./pages/BuscarPosts";
 import Posts from "./pages/Posts";
+import BecomeTransportist from "./pages/BecomeTransportist/BecomeTransportist";
+import DonationsPage from "./pages/DonationsPage/DonationsPage";
+import PedidosPage from "./pages/PedidosPage/PedidosPage";
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -24,9 +27,24 @@ const App = () => {
         <Route path="/agregarpost" exact component={CreatePost}></Route>
         <Route path="/chat" exact component={Chat}></Route>
         <Route path="/posts" exact component={Posts}></Route>
-        <Route path="/posts/:postid" exact component={PostPage}></Route>
+        <Route path="/posts/:postId" exact component={PostPage}></Route>
         {/* <Route path="/:userId/posts" exact component={UserPosts}></Route> */}
+        <Route
+          path="/user/:userId/volversetransportista"
+          exact
+          component={BecomeTransportist}
+        ></Route>
+        <Route
+          path="/user/:userId/pedidos"
+          exact
+          component={PedidosPage}
+        ></Route>
         <Route path="/user/:userId" exact component={UserPage}></Route>
+        <Route
+          path="/user/:userId/donaciones"
+          exact
+          component={DonationsPage}
+        ></Route>
         <Route path="/buscarpost" exact component={Buscador}></Route>
       </React.Fragment>
     );
@@ -40,7 +58,7 @@ const App = () => {
 
         <Route path="/buscarpost" exact component={Buscador}></Route>
         <Route path="/posts" exact component={Posts}></Route>
-        <Route path="/posts/:postid" exact component={PostPage}></Route>
+        <Route path="/posts/:postId" exact component={PostPage}></Route>
 
         {/* <Redirect to="/login" /> */}
       </React.Fragment>

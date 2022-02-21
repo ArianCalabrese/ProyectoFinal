@@ -1,3 +1,4 @@
+//NO SE USA
 import React, { Component } from "react";
 
 export default class ImageLoader extends Component {

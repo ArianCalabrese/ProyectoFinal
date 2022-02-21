@@ -62,6 +62,27 @@ const MainNavigation = () => {
     auth.logout();
   };
 
+  const handleDonations = (event) => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    console.log(userData);
+    if (userData.userId) {
+      history.push("/user/" + userData.userId + "/donaciones");
+    } else {
+      window.location.reload();
+    }
+  };
+  const handlePedidos = (event) => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    console.log(userData);
+    if (userData.userId) {
+      history.push("/user/" + userData.userId + "/pedidos");
+    } else {
+      window.location.reload();
+    }
+  };
+  const handleReclamos = (event) => {};
+  const handleConfiguration = (event) => {};
+
   const handleMyAccount = (event) => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     console.log(userData);
@@ -90,6 +111,10 @@ const MainNavigation = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMyAccount}>Mi Cuenta</MenuItem>
+      <MenuItem onClick={handleDonations}>Donaciones</MenuItem>
+      <MenuItem onClick={handlePedidos}>Pedidos</MenuItem>
+      <MenuItem onClick={handleReclamos}>Reclamos</MenuItem>
+      <MenuItem onClick={handleConfiguration}>Configuracion</MenuItem>
       <MenuItem onClick={handleDisconnectMenu}>Desconectarme</MenuItem>
     </Menu>
   );

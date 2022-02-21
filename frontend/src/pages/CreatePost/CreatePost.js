@@ -1,20 +1,46 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import MainNavigation from "../../shared/components/Navigation/MainNavigation";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import { FormControlLabel, Paper, Switch, TextField } from "@material-ui/core";
+import {
+  FormControlLabel,
+  IconButton,
+  List,
+  Paper,
+  Switch,
+  TextField,
+} from "@material-ui/core";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { ImageList, ImageListItem, ListItem, Typography } from "@mui/material";
+import {
+  ImageList,
+  ImageListItem,
+  ListItem,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UiElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
-import Axios from "axios";
-import ImageLoader from "./components/ImageLoader";
-import Geocoder from "./components/Geocoder";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
 
+import "@reach/combobox/styles.css";
+import { UserContext } from "../../shared/context/UserContext";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import ListItemText from "@mui/material/ListItemText";
+
+//
 function srcset(image, size, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
@@ -24,25 +50,12 @@ function srcset(image, size, rows = 1, cols = 1) {
   };
 }
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
-
 function getSteps() {
   return ["Información Basica", "Imagenes y Ubicación", "Revisión"];
 }
 
 const CreatePost = () => {
+  const auth = useContext(UserContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const steps = getSteps();
   const [activeStep, setActiveStep] = useState(0);
@@ -50,7 +63,72 @@ const CreatePost = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  //LIST
+  const [items, setItems] = useState([]);
+  const [itemToAdd, setItemToAdd] = useState("");
+  const [itemAmount, setItemAmount] = useState("");
 
+  const handleAddList = (e) => {
+    let item = {
+      item_name: itemToAdd,
+      item_amount: itemAmount,
+      already_donated: 0,
+    };
+    setItems((prevState) => [...prevState, item]);
+  };
+  const handleDeleteList = (e) => {
+    const newNotes = items.filter((item) => item != e);
+    setItems(newNotes);
+  };
+  const handleItemChange = (e) => {
+    setItemToAdd(e.target.value);
+  };
+  const handleAmountChange = (e) => {
+    setItemAmount(e.target.value);
+  };
+
+  //
+  //MODAL SUCCESS
+  const [open, setOpen] = useState(false);
+  const handleMoneyClose = () => {
+    setOpen(false);
+  };
+  //
+  //POST SUCCESS CREATED CHECL
+  let history = useHistory();
+
+  const [postCreated, setPostCreated] = useState(null);
+  const handleGoToPost = (e) => {
+    if (postCreated.id) {
+      history.push("/posts/" + postCreated.id);
+    } else {
+      window.location.reload();
+    }
+  };
+  //
+  //IMAGES
+  const [file, setFile] = useState([null]);
+  var fileObj = [];
+  const [fileArray, setfileArray] = useState([]);
+
+  const uploadMultipleFiles = (e) => {
+    fileObj.push(e.target.files);
+
+    for (let i = 0; i < fileObj[0].length; i++) {
+      setfileArray((prevState) => [
+        ...prevState,
+        URL.createObjectURL(fileObj[0][i]),
+      ]);
+    }
+    setFile({ file: fileArray });
+    console.log(file);
+  };
+
+  const uploadFiles = (e) => {
+    e.preventDefault();
+    console.log(file);
+  };
+  //
   const handleMoneyChange = (e) => {
     setChecked(!checked);
   };
@@ -71,22 +149,46 @@ const CreatePost = () => {
     setDescription(e.target.value);
   };
 
-  const handleFinish = (e) => {
-    Axios.post("http://localhost:5000/api/posts/agregar", {
-      title: title,
-      description: description,
-      categoria: "asdasd",
-      ciudad: "asdasd",
-      creator: "6172fc72cd04f94888531721",
-      image: "asdasd",
-    })
-      .then((response) => {
-        e.preventDefault();
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  // GEOCODER
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+  } = usePlacesAutocomplete();
+
+  const handleInput = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleSelect = (val) => {
+    setValue(val, false);
+  };
+  //
+  const handleFinish = async (e) => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/posts/agregar`,
+        "POST",
+        JSON.stringify({
+          title: title,
+          description: description,
+          categoria: "asdasd",
+          ciudad: value,
+          creator: auth.userId,
+          image: "image",
+          items: items,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(responseData.post);
+      setPostCreated(responseData.post);
+    } catch (err) {
+      console.log(err);
+    }
   };
   function getStepContent(step) {
     console.log(step);
@@ -148,7 +250,44 @@ const CreatePost = () => {
                   />
                 )}
               </Box>
-              <Box></Box>
+              <Box className="items">
+                <TextField
+                  id="standard-basic"
+                  label="¿Que necesita que le donen?"
+                  variant="standard"
+                  style={{ flex: "3" }}
+                  onChange={handleItemChange}
+                />
+                <TextField
+                  id="standard-basic"
+                  label="¿Que cantidad?"
+                  variant="standard"
+                  style={{ flex: "1" }}
+                  onChange={handleAmountChange}
+                />
+                <Button onClick={handleAddList}>Agregar</Button>
+                {items ? (
+                  <List>
+                    {(items || []).map((i) => (
+                      <ListItem
+                        secondaryAction={
+                          <IconButton edge="end" aria-label="delete">
+                            <Button onClick={() => handleDeleteList(i)}>
+                              <DeleteIcon />
+                            </Button>
+                          </IconButton>
+                        }
+                      >
+                        <ListItemText
+                          primary={`${i.item_name}(${i.item_amount})`}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <Typography variant="h2">Agregue el primer item!</Typography>
+                )}
+              </Box>
             </Box>
           </React.Fragment>
         );
@@ -172,7 +311,29 @@ const CreatePost = () => {
                   backgroundColor: "red",
                 }}
               >
-                <ImageLoader />
+                <form>
+                  <div className="form-group multi-preview">
+                    {(fileArray || []).map((url) => (
+                      <img src={url} alt="..." />
+                    ))}
+                  </div>
+
+                  <div className="form-group">
+                    <input
+                      type="file"
+                      className="form-control"
+                      onChange={uploadMultipleFiles}
+                      multiple
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-block"
+                    onClick={uploadFiles}
+                  >
+                    Upload
+                  </button>
+                </form>
               </Box>
               <Box
                 sx={{
@@ -181,7 +342,21 @@ const CreatePost = () => {
                   backgroundColor: "blue",
                 }}
               >
-                <Geocoder />
+                <Combobox onSelect={handleSelect} aria-labelledby="demo">
+                  <ComboboxInput
+                    value={value}
+                    onChange={handleInput}
+                    disabled={!ready}
+                  />
+                  <ComboboxPopover>
+                    <ComboboxList>
+                      {status === "OK" &&
+                        data.map(({ place_id, description }) => (
+                          <ComboboxOption key={place_id} value={description} />
+                        ))}
+                    </ComboboxList>
+                  </ComboboxPopover>
+                </Combobox>
               </Box>
             </Box>
           </React.Fragment>
@@ -305,7 +480,7 @@ const CreatePost = () => {
                         <Typography variant="h2">{title}</Typography>
                         <ListItem>
                           <LocationOnIcon />
-                          <Typography variant="h4">Ubicacion</Typography>
+                          <Typography variant="h4">{value}</Typography>
                         </ListItem>
                       </Box>
                       <Box sx={{ flex: "2" }}>
@@ -350,7 +525,7 @@ const CreatePost = () => {
                               Creado por:
                             </Typography>
                             <Typography variant="p" sx={{ flex: "1" }}>
-                              Arian Calabrese
+                              {auth.userId}
                             </Typography>
                           </Box>
                           <Box
@@ -384,6 +559,27 @@ const CreatePost = () => {
     <React.Fragment>
       <MainNavigation />
       <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && postCreated ? (
+        <Modal
+          open={true}
+          onClose={handleMoneyClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+        >
+          <Box>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Post creado exitosamente!
+            </Typography>
+            <Button onClick={handleGoToPost}>Ir al post</Button>
+          </Box>
+        </Modal>
+      ) : null}
       <Box
         sx={{
           flex: "1",
@@ -404,33 +600,25 @@ const CreatePost = () => {
               );
             })}
           </Stepper>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              {isLoading && <LoadingSpinner asOverlay />}
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                Step {activeStep + 1}
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: "1 1 auto" }} />
-                {activeStep === steps.length - 1 ? (
-                  <Button onClick={handleFinish}>Finish</Button>
-                ) : (
-                  <Button onClick={handleNext}>Next</Button>
-                )}
-              </Box>
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
+              {activeStep === steps.length - 1 ? (
+                <Button onClick={handleFinish}>Finalizar</Button>
+              ) : (
+                <Button onClick={handleNext}>Siguiente</Button>
+              )}
+            </Box>
+          </React.Fragment>
         </Box>
       </Box>
     </React.Fragment>

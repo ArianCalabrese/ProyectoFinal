@@ -9,6 +9,15 @@ const router = express.Router();
 
 router.get("/", postsControllers.getPosts);
 
+router.get("/donaciones/recibidas/:uid", postsControllers.getDonationsByUserId);
+
+router.get(
+  "/donaciones/realizadas/:uid",
+  postsControllers.getDonationsRealizadasByUserId
+);
+
+router.get("/donaciones", postsControllers.getDonations);
+
 router.get("/:pid", postsControllers.getPostById);
 
 router.get("/user/:uid", postsControllers.getPostsByUserId);
@@ -16,6 +25,8 @@ router.get("/user/:uid", postsControllers.getPostsByUserId);
 router.get("/categoria/:categoria", postsControllers.getPostsByCategory);
 
 router.get("/ciudad/:ciudad", postsControllers.getPostsByCiudad);
+
+router.post("/:pid/donaciones", postsControllers.setDonation);
 
 router.get(
   "/buscar/:categoria/:ciudad",

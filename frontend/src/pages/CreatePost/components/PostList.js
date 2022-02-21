@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import PostItem from "./PostItem";
 import CardPost from "../../../shared/components/UiElements/CardPost";
 import Button from "../../../shared/components/FormElements/Button";
 import PostCard from "./PostCard";
 import { Box } from "@mui/system";
+import { UserContext } from "../../../shared/context/UserContext";
 
 const PostList = (props) => {
+  const auth = useContext(UserContext);
+  console.log(props);
+  console.log(auth.userId);
   if (props.items.length === 0) {
     return (
       <div className="center">
         <CardPost>
           <h2>No se encontraron post</h2>
-          <Button to="/agregarpost">Agregar</Button>
+          {props.user && props.user == auth.userId && (
+            <Button to="/agregarpost">Agregar</Button>
+          )}
         </CardPost>
       </div>
     );

@@ -28,9 +28,11 @@ export function SignupForm(props) {
   const signup = (e) => {
     const image = require("./hombre_icono.png");
     const formData = new FormData();
+    const date = new Date();
     formData.append("name", usernameReg);
     formData.append("email", emailReg);
     formData.append("password", passwordReg);
+    formData.append("date", date);
     setBase64(Buffer.from(image, "binary").toString("base64"));
     formData.append("image", base64);
 

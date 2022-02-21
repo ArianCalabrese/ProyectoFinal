@@ -9,6 +9,10 @@ const router = express.Router();
 
 router.get("/", usersControllers.getUsers);
 
+router.get("/id/:id", usersControllers.getUsersById);
+
+router.post("/transportist/:id", usersControllers.setUserTransportistById);
+
 router.get("/ciudad/:ciudad", usersControllers.getUsersByCiudad);
 
 router.post(

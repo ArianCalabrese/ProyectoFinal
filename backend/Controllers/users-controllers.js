@@ -60,7 +60,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("Datos erroneos", 422));
   }
-  const { name, email, password } = req.body;
+  const { name, email, password, date } = req.body;
 
   let existingUser;
   try {
@@ -87,6 +87,8 @@ const signup = async (req, res, next) => {
     name: name,
     email: email,
     password: hashedPassword,
+    member_since: date,
+    es_transportista: false,
     posts: [],
   });
 
@@ -178,7 +180,69 @@ const login = async (req, res, next) => {
     .json({ userId: existingUser.id, email: existingUser.email, token: token });
 };
 
+const getUsersById = async (req, res, next) => {
+  console.log(req.body);
+  const id = req.params.id;
+  let user;
+  try {
+    user = await User.findById(id);
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontro el usuario", 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("No se encontro ningun usuario", 404);
+    return next(error);
+  }
+  res.json({ user: user.toObject({ getters: true }) });
+};
+
+const setUserTransportistById = async (req, res, next) => {
+  console.log(req.body);
+  const {
+    patente,
+    tipo_vehiculo,
+    marca,
+    modelo,
+    dias_habiles,
+    horarios_habiles,
+  } = req.body;
+
+  const id = req.params.id;
+  let user;
+  try {
+    user = await User.updateOne(
+      { _id: id },
+      {
+        $set: {
+          es_transportista: true,
+          patente: patente,
+          tipo_vehiculo: tipo_vehiculo,
+          marca: marca,
+          modelo: modelo,
+          dias_habiles: dias_habiles,
+          horarios_habiles: horarios_habiles,
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("No se encontro el usuario", 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("No se encontro ningun usuario", 404);
+    return next(error);
+  }
+  res.json({ user: user });
+};
+
+exports.setUserTransportistById = setUserTransportistById;
 exports.getUsers = getUsers;
+exports.getUsersById = getUsersById;
 exports.getUsersByCiudad = getUsersByCiudad;
 exports.singup = signup;
 exports.login = login;

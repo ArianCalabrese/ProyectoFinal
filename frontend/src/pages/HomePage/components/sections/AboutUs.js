@@ -41,7 +41,7 @@ const ownersInfo = [
   },
   {
     name: "Fiorotto Leandro",
-    rol: "FEO",
+    rol: "CIO",
     mail: "leo.fiorotto@hotmail.com",
     linkedin: "leandro-fiorotto-595a3220a",
     img: avatar3,

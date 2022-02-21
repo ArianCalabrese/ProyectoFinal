@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@wojtekmaj/react-timerange-picker": "^3.5.0"
+  }
+}
