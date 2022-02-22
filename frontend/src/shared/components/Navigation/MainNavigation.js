@@ -80,7 +80,6 @@ const MainNavigation = () => {
       window.location.reload();
     }
   };
-  const handleReclamos = (event) => {};
   const handleConfiguration = (event) => {};
 
   const handleMyAccount = (event) => {
@@ -113,7 +112,6 @@ const MainNavigation = () => {
       <MenuItem onClick={handleMyAccount}>Mi Cuenta</MenuItem>
       <MenuItem onClick={handleDonations}>Donaciones</MenuItem>
       <MenuItem onClick={handlePedidos}>Pedidos</MenuItem>
-      <MenuItem onClick={handleReclamos}>Reclamos</MenuItem>
       <MenuItem onClick={handleConfiguration}>Configuracion</MenuItem>
       <MenuItem onClick={handleDisconnectMenu}>Desconectarme</MenuItem>
     </Menu>

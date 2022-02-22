@@ -250,7 +250,14 @@ const CreatePost = () => {
                   />
                 )}
               </Box>
-              <Box className="items">
+              <Box
+                className="items"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "1rem",
+                }}
+              >
                 <TextField
                   id="standard-basic"
                   label="¿Que necesita que le donen?"
@@ -342,11 +349,13 @@ const CreatePost = () => {
                   backgroundColor: "blue",
                 }}
               >
-                <Combobox onSelect={handleSelect} aria-labelledby="demo">
+                <Combobox onSelect={handleSelect}>
                   <ComboboxInput
                     value={value}
                     onChange={handleInput}
                     disabled={!ready}
+                    style={{ width: "100%" }}
+                    placeholder="Ingrese la dirección"
                   />
                   <ComboboxPopover>
                     <ComboboxList>

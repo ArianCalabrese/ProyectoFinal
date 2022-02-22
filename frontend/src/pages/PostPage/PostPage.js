@@ -2,6 +2,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  IconButton,
   Modal,
   Paper,
   TextField,
@@ -16,8 +17,12 @@ import MyCards from "./components/Card";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UiElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
 import { UserContext } from "../../shared/context/UserContext";
+import ChatIcon from "@mui/icons-material/Chat";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -43,6 +48,8 @@ const style = {
 };
 
 const PostPage = () => {
+  const history = useHistory();
+
   const auth = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [openGoods, setGoodsOpen] = useState(false);
@@ -74,6 +81,16 @@ const PostPage = () => {
     setitemsToDonate(newItems);
   };
   //
+  const handleChatOpen = (event) => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    console.log(userData);
+    if (userData.userId) {
+      history.push("/chat");
+    } else {
+      window.location.reload();
+    }
+  };
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -273,11 +290,7 @@ const PostPage = () => {
                       alignSelf: "flex-end",
                       paddingBottom: "1rem",
                     }}
-                  >
-                    <Typography variant="p">
-                      Categoria: {loadedPost.categoria}
-                    </Typography>
-                  </Box>
+                  ></Box>
                   <Box
                     sx={{ flex: "1", display: "flex", flexDirection: "row" }}
                   >
@@ -296,6 +309,14 @@ const PostPage = () => {
                       </Typography>
                       <Typography variant="p" sx={{ flex: "1" }}>
                         {user.name}
+                        <IconButton
+                          size="large"
+                          aria-label="show 4 new mails"
+                          color="inherit"
+                          onClick={handleChatOpen}
+                        >
+                          <ChatIcon />
+                        </IconButton>
                       </Typography>
                     </Box>
                     <Box

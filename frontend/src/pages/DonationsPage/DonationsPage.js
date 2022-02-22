@@ -74,6 +74,11 @@ const DonationsPage = () => {
     <React.Fragment>
       <MainNavigation />
       <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
@@ -101,27 +106,29 @@ const DonationsPage = () => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box sx={{ padding: "1rem" }}>
-            {!isLoading && donaciones ? (
+            {!isLoading && donaciones && donaciones.length != 0 ? (
               donaciones.map((val) => {
-                return <DonationCard donation={val} />;
+                return <DonationCard donation={val} donacion={true} />;
               })
             ) : (
-              <div className="center">
-                <LoadingSpinner />
-              </div>
+              <Box sx={{ padding: "1rem" }}>
+                <Typography variant="h3">
+                  Aun no ha realizado ninguna donación!
+                </Typography>
+              </Box>
             )}
           </Box>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Box sx={{ padding: "1rem" }}>
-            {!isLoading && donaciones ? (
+            {!isLoading && donaciones && donaciones.length != 0 ? (
               donaciones.map((val) => {
                 return <DonationCard donation={val} />;
               })
             ) : (
-              <div className="center">
-                <LoadingSpinner />
-              </div>
+              <Typography variant="h3">
+                Aun no ha recibido ninguna donación!
+              </Typography>
             )}
           </Box>
         </TabPanel>
