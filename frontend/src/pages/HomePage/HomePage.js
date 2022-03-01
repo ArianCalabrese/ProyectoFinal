@@ -40,15 +40,15 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Mision />
-      <Box>
+      {/* <Box>
         <Typography component="div" className={classes.titulo}>
           <Typography variant="h3" component="h2" align="center">
             Top Posts
           </Typography>
         </Typography>
-      </Box>
+      </Box> */}
 
-      <MostValuablePosts />
+      {/* <MostValuablePosts /> */}
       <Box>
         <Typography component="div" className={classes.titulo}>
           <Typography variant="h3" component="h2" align="center">

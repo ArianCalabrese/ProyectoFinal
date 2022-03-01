@@ -34,6 +34,7 @@ import {
 } from "@reach/combobox";
 
 import "@reach/combobox/styles.css";
+import "./CreatePost.css";
 import { UserContext } from "../../shared/context/UserContext";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -292,7 +293,7 @@ const CreatePost = () => {
                     ))}
                   </List>
                 ) : (
-                  <Typography variant="h2">Agregue el primer item!</Typography>
+                  <Typography variant="h2">Agregue los items</Typography>
                 )}
               </Box>
             </Box>
@@ -315,13 +316,12 @@ const CreatePost = () => {
                 sx={{
                   flex: "1",
                   padding: "1rem",
-                  backgroundColor: "red",
                 }}
               >
                 <form>
                   <div className="form-group multi-preview">
                     {(fileArray || []).map((url) => (
-                      <img src={url} alt="..." />
+                      <img src={url} alt="..." style={{maxWidth:"280px"}}/>
                     ))}
                   </div>
 
@@ -346,7 +346,6 @@ const CreatePost = () => {
                 sx={{
                   flex: "1",
                   padding: "1rem",
-                  backgroundColor: "blue",
                 }}
               >
                 <Combobox onSelect={handleSelect}>
@@ -412,69 +411,58 @@ const CreatePost = () => {
                     >
                       <ImageList cols={3} variant="quilted" rowHeight={164}>
                         <ImageListItem
-                          key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                          key="https://www.resumenlatinoamericano.org/wp-content/uploads/2021/05/mil-ollas.jpg"
                           cols={3}
                           rows={2}
                         >
                           <img
                             {...srcset(
-                              "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                              "https://www.resumenlatinoamericano.org/wp-content/uploads/2021/05/mil-ollas.jpg",
                               121,
                               2,
                               1
                             )}
-                            alt={"testing"}
+                            alt="postImage"
                             loading="lazy"
                           />
                         </ImageListItem>
                         <ImageListItem
-                          key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                          key="https://www.lt8.com.ar/wp-content/uploads/2020/10/Comedor-Escolar-Santa-Fe-El-Litoral.jpg"
                           cols={1}
                           rows={1}
                         >
                           <img
                             {...srcset(
-                              "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                              "https://www.lt8.com.ar/wp-content/uploads/2020/10/Comedor-Escolar-Santa-Fe-El-Litoral.jpg",
                               121,
                               1,
                               1
                             )}
-                            alt={"testing"}
+                            alt="postImage"
                             loading="lazy"
                           />
                         </ImageListItem>
                         <ImageListItem
-                          key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                          key="https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg"
                           cols={1}
                           rows={1}
                         >
                           <img
                             {...srcset(
-                              "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                              "https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg",
                               121,
                               1,
                               1
                             )}
-                            alt={"testing"}
+                            alt="postImage"
                             loading="lazy"
                           />
                         </ImageListItem>
                         <ImageListItem
-                          key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                          key="https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg"
                           cols={1}
                           rows={1}
-                        >
-                          <img
-                            {...srcset(
-                              "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
-                              121,
-                              1,
-                              3
-                            )}
-                            alt={"testing"}
-                            loading="lazy"
-                          />
-                        </ImageListItem>
+                        ></ImageListItem>
                       </ImageList>
                     </Box>
                     <Box
@@ -508,11 +496,7 @@ const CreatePost = () => {
                             alignSelf: "flex-end",
                             paddingBottom: "1rem",
                           }}
-                        >
-                          <Typography variant="p">
-                            Categoria: Inmuebles
-                          </Typography>
-                        </Box>
+                        ></Box>
                         <Box
                           sx={{
                             flex: "1",
@@ -534,7 +518,7 @@ const CreatePost = () => {
                               Creado por:
                             </Typography>
                             <Typography variant="p" sx={{ flex: "1" }}>
-                              {auth.userId}
+                              Arian Calabrese
                             </Typography>
                           </Box>
                           <Box
@@ -546,9 +530,9 @@ const CreatePost = () => {
                             }}
                           >
                             <img
-                              src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-                              srcSet="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-                              alt={"testing"}
+                              src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png"
+                              srcSet="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png"
+                              alt="userImageg"
                               loading="lazy"
                               style={{ maxHeight: "80px", maxWidth: "80px" }}
                             />
@@ -579,13 +563,28 @@ const CreatePost = () => {
           onClose={handleMoneyClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          sx={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgb(194, 225, 255)",
+          }}
         >
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "10rem",
+            }}
+          >
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Post creado exitosamente!
             </Typography>
-            <Button onClick={handleGoToPost}>Ir al post</Button>
+            <Button onClick={handleGoToPost} variant="contained">
+              Ir al post
+            </Button>
           </Box>
         </Modal>
       ) : null}

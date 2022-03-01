@@ -138,6 +138,11 @@ const PostPage = () => {
     setGoodsOpen(false);
   };
 
+  const [openDonation, setDonationOpen] = useState(false);
+
+  const handleDonationClose = () => {
+    setDonationOpen(false);
+  };
   const handleDonation = async () => {
     const response = await sendRequest(
       `http://localhost:5000/api/posts/${loadedPost.id}/donaciones`,
@@ -153,6 +158,8 @@ const PostPage = () => {
         Authorization: "Bearer " + auth.token,
       }
     );
+    setGoodsOpen(false);
+    setDonationOpen(true);
     console.log(response);
   };
 
@@ -194,69 +201,58 @@ const PostPage = () => {
               >
                 <ImageList cols={3} variant="quilted" rowHeight={164}>
                   <ImageListItem
-                    key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                    key="https://www.resumenlatinoamericano.org/wp-content/uploads/2021/05/mil-ollas.jpg"
                     cols={3}
                     rows={2}
                   >
                     <img
                       {...srcset(
-                        "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                        "https://www.resumenlatinoamericano.org/wp-content/uploads/2021/05/mil-ollas.jpg",
                         121,
                         2,
                         1
                       )}
-                      alt={"testing"}
+                      alt="postImage"
                       loading="lazy"
                     />
                   </ImageListItem>
                   <ImageListItem
-                    key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                    key="https://www.lt8.com.ar/wp-content/uploads/2020/10/Comedor-Escolar-Santa-Fe-El-Litoral.jpg"
                     cols={1}
                     rows={1}
                   >
                     <img
                       {...srcset(
-                        "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                        "https://www.lt8.com.ar/wp-content/uploads/2020/10/Comedor-Escolar-Santa-Fe-El-Litoral.jpg",
                         121,
                         1,
                         1
                       )}
-                      alt={"testing"}
+                      alt="postImage"
                       loading="lazy"
                     />
                   </ImageListItem>
                   <ImageListItem
-                    key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                    key="https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg"
                     cols={1}
                     rows={1}
                   >
                     <img
                       {...srcset(
-                        "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
+                        "https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg",
                         121,
                         1,
                         1
                       )}
-                      alt={"testing"}
+                      alt="postImage"
                       loading="lazy"
                     />
                   </ImageListItem>
                   <ImageListItem
-                    key="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                    key="https://elcirculo.com.ar/wp-content/uploads/2019/08/68b205b3d673a99e84235aa4cfe35c06_MAIN.jpg"
                     cols={1}
                     rows={1}
-                  >
-                    <img
-                      {...srcset(
-                        "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
-                        121,
-                        1,
-                        3
-                      )}
-                      alt={"testing"}
-                      loading="lazy"
-                    />
-                  </ImageListItem>
+                  ></ImageListItem>
                 </ImageList>
               </Box>
               <Box
@@ -329,9 +325,9 @@ const PostPage = () => {
                     >
                       <a href={"/user/" + user.id}>
                         <img
-                          src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-                          srcSet="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-                          alt={"testing"}
+                          src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png"
+                          srcSet="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png"
+                          alt="userImage"
                           loading="lazy"
                           style={{ maxHeight: "80px", maxWidth: "80px" }}
                         />
@@ -342,18 +338,27 @@ const PostPage = () => {
               </Box>
             </Box>
             <Box
-              sx={{ flex: "1", backgroundColor: "blue" }}
+              sx={{
+                flex: "1",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: "1rem",
+              }}
               className="secondaryDataWrapper"
             >
-              <Button onClick={handleMoneyOpen}>Donar dinero</Button>
-              <Button onClick={handleGoodsOpen}>Donar bienes</Button>
-              <Modal
-                open={openGoods}
-                onClose={handleGoodsClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
+              <Box className="botonera" sx={{ paddingTop: "1rem" }}>
+                <Button onClick={handleMoneyOpen}>Donar dinero</Button>
+                <Button onClick={handleGoodsOpen}>Donar bienes</Button>
+              </Box>
+              <Modal open={openGoods} onClose={handleGoodsClose} style={style}>
+                <Box
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "1rem",
+                  }}
+                >
                   <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -361,10 +366,25 @@ const PostPage = () => {
                   >
                     Seleccione lo que desea donar
                   </Typography>
-                  <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "1rem 0",
+                    }}
+                  >
                     {loadedPost.items.map((item) => {
                       return (
-                        <React.Fragment>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
                           <TextField
                             id="standard-basic"
                             label="Cantidad"
@@ -372,11 +392,12 @@ const PostPage = () => {
                             onChange={(e) => handleItemOnChange(item, e)}
                           />
                           <Typography variant="p">{item.item_name}</Typography>
-                        </React.Fragment>
+                        </Box>
                       );
                     })}
-                    <Button onClick={handleDonation}>Donar</Button>
                   </Box>
+
+                  <Button onClick={handleDonation}>Donar</Button>
                 </Box>
               </Modal>
               <Modal
@@ -387,6 +408,29 @@ const PostPage = () => {
               >
                 <Box>
                   <MyCards />
+                </Box>
+              </Modal>
+              <Modal
+                open={openDonation}
+                onClose={handleDonationClose}
+                style={style}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingTop: "10rem",
+                  }}
+                >
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    Donación realizada con exito!
+                  </Typography>
                 </Box>
               </Modal>
             </Box>

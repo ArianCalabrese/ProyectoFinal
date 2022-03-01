@@ -22,7 +22,7 @@ const getPosts = async (req, res, next) => {
   }
   if (!posts || posts.length === 0) {
     const error = new HttpError(
-      "No se encontro ningun post den la base de datos",
+      "No se encontro ningun post en la base de datos",
       404
     );
     return next(error);
@@ -401,7 +401,7 @@ const getDonations = async (req, res, next) => {
   }
   if (!donations || donations.length === 0) {
     const error = new HttpError(
-      "No se encontro ningun post den la base de datos",
+      "No se encontro ningun post en la base de datos",
       404
     );
     return next(error);
@@ -412,6 +412,35 @@ const getDonations = async (req, res, next) => {
     ),
   });
 };
+
+const updateDonationState = async (req, res, next) => {
+  console.log(req.body);
+  const { new_state } = req.body;
+
+  const id = req.params.did;
+  let donation;
+  try {
+    donation = await Donation.updateOne(
+      { _id: id },
+      {
+        $set: {
+          state: new_state,
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("Error", 500);
+    return next(error);
+  }
+
+  if (!donation) {
+    const error = new HttpError("Error", 404);
+    return next(error);
+  }
+  res.json({ donation: donation });
+};
+exports.updateDonationState = updateDonationState;
 exports.getDonationsRealizadasByUserId = getDonationsRealizadasByUserId;
 exports.getDonationsByUserId = getDonationsByUserId;
 exports.getDonations = getDonations;

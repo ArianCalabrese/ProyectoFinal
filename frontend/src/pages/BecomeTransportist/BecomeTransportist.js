@@ -4,6 +4,9 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  MenuItem,
+  Modal,
+  Select,
 } from "@material-ui/core";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
@@ -14,7 +17,25 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UiElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UiElements/LoadingSpinner";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
 const BecomeTransportist = () => {
+  const [openModal, setopenModal] = useState(false);
+  const handleModalClose = () => {
+    setopenModal(false);
+  };
   const auth = useContext(UserContext);
   const [patente, setPatente] = useState("");
   const [tipo, setTipo] = useState("");
@@ -75,6 +96,7 @@ const BecomeTransportist = () => {
           Authorization: "Bearer " + auth.token,
         }
       );
+      setopenModal(true);
       console.log(responseData);
     } catch (err) {
       console.log(err);
@@ -103,12 +125,17 @@ const BecomeTransportist = () => {
               variant="standard"
               onChange={handlePatenteChange}
             />
-            <TextField
+            <Select
+              labelId="demo-simple-select-label"
               id="standard-basic"
+              value={tipo}
               label="Tipo de vehiculo"
-              variant="standard"
               onChange={handleTipoChange}
-            />
+            >
+              <MenuItem value={"Auto"}>Auto</MenuItem>
+              <MenuItem value={"Camion"}>Camion</MenuItem>
+              <MenuItem value={"Camioneta"}>Camioneta</MenuItem>
+            </Select>
           </Box>
           <Box sx={{ flex: "1" }}>
             <TextField
@@ -142,6 +169,21 @@ const BecomeTransportist = () => {
           <Button onClick={handleSubmitTransportista}>Aplicar</Button>
         </Paper>
       </Box>
+      <Modal open={openModal} onClose={handleModalClose} style={style}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: "10rem",
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Modificado con exito!
+          </Typography>
+        </Box>
+      </Modal>
     </React.Fragment>
   );
 };

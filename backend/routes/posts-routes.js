@@ -28,6 +28,8 @@ router.get("/ciudad/:ciudad", postsControllers.getPostsByCiudad);
 
 router.post("/:pid/donaciones", postsControllers.setDonation);
 
+router.post("/donaciones/update/:did", postsControllers.updateDonationState);
+
 router.get(
   "/buscar/:categoria/:ciudad",
   postsControllers.getPostsByCategoriaCiudad

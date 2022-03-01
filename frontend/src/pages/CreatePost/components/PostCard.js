@@ -1,16 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import yellow from "@material-ui/core/colors/yellow";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import { ImageList, ImageListItem, List, ListItem } from "@mui/material";
-import { ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles({
   list: {
@@ -41,8 +34,8 @@ const PostCard = (props) => {
       >
         <Box className="imageWrapper" sx={{ width: "30%", height: 280 }}>
           <img
-            src={`http://localhost:5000/${props.image}`}
-            srcSet={`http://localhost:5000/${props.image}`}
+            src={props.image}
+            srcSet={props.image}
             alt={props.title}
             loading="lazy"
             style={{ width: "100%", height: "100%" }}

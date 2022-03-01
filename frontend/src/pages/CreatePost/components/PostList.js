@@ -39,7 +39,7 @@ const PostList = (props) => {
         <PostCard
           key={post.id}
           id={post.id}
-          image={post.image}
+          image="https://www.resumenlatinoamericano.org/wp-content/uploads/2021/05/mil-ollas.jpg"
           title={post.title}
           ciudad={post.ciudad}
           categoria={post.categoria}

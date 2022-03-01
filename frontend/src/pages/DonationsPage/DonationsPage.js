@@ -123,7 +123,13 @@ const DonationsPage = () => {
           <Box sx={{ padding: "1rem" }}>
             {!isLoading && donaciones && donaciones.length != 0 ? (
               donaciones.map((val) => {
-                return <DonationCard donation={val} />;
+                return (
+                  <DonationCard
+                    donation={val}
+                    donacion={true}
+                    recibido={true}
+                  />
+                );
               })
             ) : (
               <Typography variant="h3">

@@ -76,8 +76,9 @@ const UserPage = () => {
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
+                src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png"
                 alt=""
+                style={{maxWidth:"280px"}}
               />
             </Box>
             <Box sx={{ flex: "3" }}>

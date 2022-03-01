@@ -80,7 +80,7 @@ const PedidosPage = () => {
         </Box>
       )}
 
-      {!isLoading && donaciones ? (
+      {!isLoading && donaciones && user && user.es_transportista ? (
         donaciones.map((val) => {
           return <DonationCard donation={val} pedido={true} />;
         })
